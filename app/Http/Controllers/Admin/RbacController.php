@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Model\Permission;
 use HuangYi\Rbac\Models\Role;
 use Illuminate\Http\Request;
 
@@ -44,19 +45,41 @@ class RbacController extends Controller
         }
     }
 
+    /**
+     * 权限列表
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function permissionList(){
+        $data = Permission::all()->toArray();
+        return view('permission.index',['datas'=>$data]);
+    }
+
 
     /**
      * 添加权限
      */
     public function permissionAdd(){
         $permissionManager = new \HuangYi\Rbac\Managers\PermissionManager();
-        $permission = $permissionManager->create([
-            'name' => 'Create product',
-            'slug' => 'product.create',
-            'description' => 'Create a new product.',
+        $permissionManager->create([
+            'name' => '/admin/index/index',
+            'display_name' => 'product.create',
+            'description' => '首页中心',
+            'created_at'  =>date('Y-m-d H:i:s')
         ]);
-
+         return redirect('/admin/role/permissionList');
     }
+
+    /**
+     * 添加权限
+     */
+    public function permissionDelete($id){
+        $permissionManager = new \HuangYi\Rbac\Managers\PermissionManager();
+        $permissionManager->delete($id);
+        return redirect('/admin/role/permissionList');
+    }
+
+
+
 
     /**
      * 角色绑定权限

@@ -77,7 +77,7 @@ class User extends Authenticatable
         $BusinessCount  = Business::count();
         $ActivityCount  = Activity::count();
         $ClientUsersCount = ClientUsers::count();
-        $ApplyRecord = ApplyRecord::count();
+        $ApplyRecord = ApplyRecord::where('status',1)->count();
         return ['BusinessCount'=>$BusinessCount,'ActivityCount'=>$ActivityCount,'ClientUsersCount'=>$ClientUsersCount,'ApplyRecord'=>$ApplyRecord];
     }
 }

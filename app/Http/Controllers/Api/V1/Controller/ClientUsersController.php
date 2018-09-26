@@ -58,14 +58,14 @@ class ClientUsersController extends BaseController
         if ($collection){
             $business_ids =  Common::map($collection,'business_id','business_id');
             $data = Business::whereIn('id',$business_ids)
-                ->select(['id', 'name','category_id','shop_img','intro','sales_type','browsing_num','phone','shop_position'])
-                ->orderBy('id','asc')
-                ->get()
-                ->toArray();
+                ->select(['id', 'name','category_id','shop_img','intro','sales_type','shop_id','browsing_num'])
+                ->orderBy('id', 'desc')
+                ->paginate(config('language.api_pages'))->toArray();
             if($data){
+                $url =config('language.url');
                 //获取商家详细页面的banner图片
-                foreach ($data as &$value){
-                    $value['banner_img'] = BusinessImg::select(['img'])->where('business_id',$value['id'])->get()->toArray();
+                foreach ($data['data'] as &$value){
+                    $value['shop_img'] =$url.$value['shop_img'];
                 }
             }
         }

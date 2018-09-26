@@ -51,7 +51,8 @@ class AdminController extends Controller
      */
     public function delete($id){
         if ($id){
-             //User::find($id)->delete();
+           // dd(User::destroy(intval($id)));
+
             return ['code'=>1,'message'=>'删除成功'];
         }
         return ['code'=>0,'message'=>'数据不存在!'];

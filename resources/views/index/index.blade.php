@@ -18,19 +18,20 @@
     <section class="content">
         <div class="row">
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <a style="color: #1c160d" href="{{url('/admin/business/index')}}">
                 <div class="info-box">
                     <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
-
                     <div class="info-box-content">
                         <span class="info-box-text">商家数量</span>
                         <span class="info-box-number">{{$BusinessCount}}</span>
                     </div>
-                    <!-- /.info-box-content -->
                 </div>
+                </a>
                 <!-- /.info-box -->
             </div>
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <a style="color: #1c160d" href="{{url('/admin/activity/index')}}">
                 <div class="info-box">
                     <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
 
@@ -40,10 +41,12 @@
                     </div>
                     <!-- /.info-box-content -->
                 </div>
+                </a>
                 <!-- /.info-box -->
             </div>
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <a style="color: #1c160d" href="{{url('/admin/client_users/index')}}">
                 <div class="info-box">
                     <span class="info-box-icon bg-yellow"><i class="fa fa-files-o"></i></span>
 
@@ -53,19 +56,21 @@
                     </div>
                     <!-- /.info-box-content -->
                 </div>
+                </a>
                 <!-- /.info-box -->
             </div>
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <a style="color: #1c160d" href="{{url('/admin/client_users/applyRecord')}}?status=1">
                 <div class="info-box">
                     <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
-
                     <div class="info-box-content">
-                        <span class="info-box-text">经销商申请数量</span>
+                        <span class="info-box-text">待审核(经销商)</span>
                         <span class="info-box-number">{{$ApplyRecord}}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
+                </a>
                 <!-- /.info-box -->
             </div>
             <!-- /.col -->

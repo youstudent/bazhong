@@ -65,9 +65,12 @@ Route::group(['middleware'=>'auth:web','namespace'=>'admin'], function(){
     });
 
 
-
+    // Rbac
     Route::group(['prefix'=>'role'],function (){
          Route::get('/roleList','RbacController@roleList');
+         Route::get('/permissionList','RbacController@permissionList');
+         Route::get('/permissionAdd','RbacController@permissionAdd');
+         Route::get('/permissionDelete/{id}','RbacController@permissionDelete');
     });
 
 });

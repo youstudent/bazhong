@@ -9,7 +9,9 @@
 namespace App\Http\Controllers\Api\Model;
 
 
-class ClientUsersCollection
+use Illuminate\Database\Eloquent\Model;
+
+class ClientUsersCollection extends Model
 {
     protected $table= 'client_users_collection';
 
