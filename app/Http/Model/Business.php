@@ -4,6 +4,7 @@ namespace App\Http\Model;
 
 use App\UploadsImg;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 
 class Business extends Model
@@ -92,6 +93,7 @@ class Business extends Model
             $img =  UploadsImg::upload_img($file,$path,$rule);
             $data['shop_img'] = $img['path'];
         }
+        $data['password'] = Hash::make($data['password']);
         $data['shop_id'] = self::createCode();
         $res = self::create($data);
         if ($res){
@@ -127,6 +129,11 @@ class Business extends Model
         if ($file){
             $img =  UploadsImg::upload_img(Input::file('shop_img'),$path,$rule);
             $data['shop_img'] = $img['path'];
+        }
+        if ($data['password']){
+            $data['password'] = Hash::make($data['password']);
+        }else{
+            $data['password'];
         }
         unset($data['_token']);
         unset($data['files']);

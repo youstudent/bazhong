@@ -49,7 +49,7 @@
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-plus"></i> 确认</button>
+                                <button type="submit" class="btn btn-default"><i class="fa fa-fw fa-pencil"></i>修改</button>
                             </div>
                         </div>
                         <p class="page-header"></p>

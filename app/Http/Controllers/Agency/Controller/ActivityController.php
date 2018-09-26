@@ -44,4 +44,44 @@ class ActivityController extends AgencyController
         }
     }
 
+    /**
+     * 详情
+     * @param $id
+     * @return array
+     */
+    public function details($id){
+        $data = Activity::where(['id'=>$id])->select(['content','theme','activity_address','img','remarks','activity_date'])->first()->toArray();
+        if ($data){
+            $html = "<table class='table table-hover table-bordered text-center table-striped'>
+                        <tr>
+                            <td>主题</td>
+                            <td>{$data['theme']}</td>
+                        </tr>
+                        <tr>
+                            <td>活动地址</td>
+                            <td>{$data['activity_address']}</td>
+                        </tr>
+                        <tr>
+                            <td>活动日期</td>
+                            <td>{$data['activity_date']}</td>
+                        </tr>
+                        <tr>
+                            <td>内容</td>
+                            <td>{$data['content']}</td>
+                        </tr>
+                        <tr>
+                            <td>活动图片</td>
+                            <td><img style='width: 100px' src='/storage/{$data['img']}' alt=''></td>
+                        </tr>
+                        <tr>
+                            <td>平台备注</td>
+                            <td>{$data['remarks']}</td>
+                        </tr>
+                    </table>";
+            return ['code'=>1,'message'=>'成功!','data'=>$html];
+        }
+        return ['code'=>0,'message'=>'数据不存在!'];
+    }
+
+
 }

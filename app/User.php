@@ -1,6 +1,10 @@
 <?php
 
 namespace App;
+use App\Http\Model\Activity;
+use App\Http\Model\ApplyRecord;
+use App\Http\Model\Business;
+use App\Http\Model\ClientUsers;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustRoleTrait;
@@ -63,5 +67,17 @@ class User extends Authenticatable
         }
         return false;
 
+    }
+
+    /**
+     * 获取数据统计
+     * @return array
+     */
+    public function getCount(){
+        $BusinessCount  = Business::count();
+        $ActivityCount  = Activity::count();
+        $ClientUsersCount = ClientUsers::count();
+        $ApplyRecord = ApplyRecord::count();
+        return ['BusinessCount'=>$BusinessCount,'ActivityCount'=>$ActivityCount,'ClientUsersCount'=>$ClientUsersCount,'ApplyRecord'=>$ApplyRecord];
     }
 }

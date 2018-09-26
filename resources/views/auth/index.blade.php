@@ -20,7 +20,7 @@
                 <div class="box">
 
                     <div class="box-header" style="margin-top: 10px">
-                        <a href="{{url('admin/create')}}" class="btn btn-default pull-right"> <i class="fa fa-plus"></i> &nbsp;添加</a>
+                        <a href="{{url('admin/admin/create')}}" class="btn btn-default pull-right"> <i class="fa fa-plus"></i> &nbsp;添加</a>
                     </div>
 
                     <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
@@ -42,8 +42,8 @@
                                     <td>{{$data['email']}}</td>
                                     <td>{{$data['created_at']}}</td>
                                     <td>
-                                        <a href="{{url('admin/edit')}}?id={{$data['id']}}" class="btn btn-default btn-sm"><i class="fa fa-fw fa-pencil"></i>修改</a>&nbsp;
-                                        <a hrefs="{{url('admin/delete')}}/{{$data['id']}}" class="btn btn-default btn-sm delete"><i class="fa fa-fw fa-trash"></i>删除</a>
+                                        <a href="{{url('admin/admin/edit')}}?id={{$data['id']}}" class="btn btn-default btn-sm"><i class="fa fa-fw fa-pencil"></i>修改</a>&nbsp;
+                                        <a hrefs="{{url('admin/admin/delete')}}/{{$data['id']}}" class="btn btn-default btn-sm delete"><i class="fa fa-fw fa-trash"></i>删除</a>
                                     </td>
                                 </tr>
                             <?php $i++?>

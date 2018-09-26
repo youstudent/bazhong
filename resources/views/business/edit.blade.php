@@ -74,7 +74,7 @@
                             </div>
                             <label for="password" class="col-sm-1 control-label">密码<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-3">
-                                <input type="password" name="password" id="password" required class="form-control text-danger" placeholder="请输输入密码" value="{{$data['password']}}">
+                                <input type="password" name="password" id="password" required class="form-control text-danger" placeholder="请输入新密码">
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
@@ -147,7 +147,7 @@
            },
            initialPreview: [ //预览图片的设置
                <?php foreach ($img as $value){
-               echo "\""."<img src='/storage{$value['img']}' class='file-preview-image' alt='肖像图片' title='肖像图片'>"."\"".",";
+               echo "\""."<img src='{$value['img']}' class='file-preview-image' alt='肖像图片' title='肖像图片'>"."\"".",";
                }
            ?>
            ],

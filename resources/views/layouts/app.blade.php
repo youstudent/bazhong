@@ -377,6 +377,7 @@
           <ul class="treeview-menu">
             <li><a href="{{url('admin/client_users/index')}}"><i class="fa fa-circle-o"></i>用户列表</a></li>
             <li><a href="{{url('admin/client_users/cardRecord')}}"><i class="fa fa-circle-o"></i>打卡记录</a></li>
+            <li><a href="{{url('admin/client_users/applyRecord')}}"><i class="fa fa-circle-o"></i>经销商申请</a></li>
           </ul>
         </li>
         <li class="treeview">

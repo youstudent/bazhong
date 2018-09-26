@@ -50,7 +50,10 @@ Route::group(['middleware'=>'auth:web','namespace'=>'admin'], function(){
 //玩家管理
     Route::group(['prefix'=>'client_users'],function (){
         Route::get('/index','ClientUsersController@index');
-        Route::get('/cardRecord','ClientUsersController@cardRecord'); //打卡记录
+        Route::match(['get','post'],'/edit','ClientUsersController@edit');
+        Route::get('/cardRecord','ClientUsersController@cardRecord');
+        Route::get('/applyRecord','ClientUsersController@applyRecord'); //打卡记录
+        Route::get('/status/{id}/{status}','ClientUsersController@status');
     });
     //管理员
     Route::group(['prefix'=>'admin'],function (){
@@ -70,7 +73,7 @@ Route::group(['middleware'=>'auth:web','namespace'=>'admin'], function(){
 });
 
 Route::auth();
-Route::group(['namespace'=>'admin'],function (){
+Route::group(['namespace'=>'Admin'],function (){
     Auth::routes();
 });
 

@@ -26,6 +26,10 @@ class BannerController extends BaseController
             ->where('status',1)
             ->orderBy('sort', 'desc')
             ->get()->toArray();
+        //拼接图片路径
+        foreach ($data as &$value){
+            $value['img'] =config('language.url').$value['img'];
+        }
         return $this->jsonEncode(1,'ok',$data);
     }
 

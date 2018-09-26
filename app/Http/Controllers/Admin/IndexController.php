@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -14,7 +15,9 @@ class IndexController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request){
-        return view('index.index');
+        $model = new User();
+        $data= $model->getCount();
+        return view('index.index',$data);
     }
 
 }

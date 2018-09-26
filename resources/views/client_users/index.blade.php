@@ -45,7 +45,7 @@
                                          <button class="btn btn-default" type="submit"><i class="fa fa-search"></i>&nbsp;搜索</button>
 
                                         </span>
-                                        <a class="btn btn-default" href="{{'/admin//client_users/index'}}">重置</a>
+                                        <a class="btn btn-default" href="{{'/admin/client_users/index'}}">重置</a>
                                     </div>
                                 </div>
                             </div>
@@ -62,6 +62,9 @@
                                 <th>用户名</th>
                                 <th>电话</th>
                                 <th>性别</th>
+                                <th>头像</th>
+                                <th>生日</th>
+                                <th>用户类型</th>
                                 <th>注册时间</th>
                                 <th>状态</th>
                                 <th>操作</th>
@@ -74,6 +77,9 @@
                                     <td>{{$data['name']}}</td>
                                     <td>{{$data['phone']}}</td>
                                     <td>{{$data['sex']==1?'男':'女'}}</td>
+                                    <td><img style='width: 50px' src='{{'/storage/'.$data['headimgurl']}}' alt=''></td>
+                                    <td>{{$data['birthday']}}</td>
+                                    <td>{{$data['identity_type']?$data['identity_type']:'普通用户'}}</td>
                                     <td>{{$data['created_at']}}</td>
                                     <td>
                                         @if($data['status'] ==1)
@@ -83,7 +89,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{url('/admin/business/edit')}}?id={{$data['id']}}" class="btn btn-info btn-sm">修改</a>&nbsp;
+                                        <a href="{{url('/admin/client_users/edit')}}?id={{$data['id']}}" class="btn btn-info btn-sm">修改</a>&nbsp;
                                     </td>
                                 </tr>
                             <?php $i++?>

@@ -9,7 +9,9 @@
 namespace App\Http\Model;
 
 
+use App\UploadsImg;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Input;
 
 class ClientUsers extends Model
 {
@@ -28,7 +30,7 @@ class ClientUsers extends Model
         $time = $this->initTime($search);
         $keyword =  request('keyword')?request('keyword'):'';
         $select = request('select')?request('select'):'1';
-        $data = self::select(['id','name', 'phone', 'created_at','users_id','status','sex'])
+        $data = self::select(['id','name', 'phone', 'created_at','users_id','status','sex','headimgurl','birthday','identity_type'])
             ->where('created_at','>',$time[0])->where('created_at','<',$time[1])
             ->where(function ($query) use ($select,$keyword) {
                 if ($select && $keyword) {
@@ -65,6 +67,26 @@ class ClientUsers extends Model
         $times = config('language.start_time').' - '.date('Y-m-d H:i:s',strtotime('+1 day'));
         $this->time = $times;
         return explode(' - ',$times);
+    }
+
+
+    /**
+     * 修改用户资料
+     * @param $request
+     * @return mixed
+     */
+    public function edit($request){
+        $data = $request->all();
+        $file =  Input::file('headimgurl');
+        $path = '/uploads';
+        $rule =['jpg','png','gif'];
+        if ($file){
+            $img =  UploadsImg::upload_img($file,$path,$rule);
+            $data['headimgurl'] = $img['path'];
+        }
+        unset($data['_token']);
+        unset($data['time']);
+        return self::where(['id'=>$data['id']])->update($data);
     }
 
 }

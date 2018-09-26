@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Api\V1\Controller;
 use App\Http\Controllers\Api\Model\ClientUsers;
 use App\Http\Controllers\Api\Model\ClientUsersCollection;
 use App\Http\Controllers\Api\Model\Ptc;
+use App\Http\Model\ApplyRecord;
 use App\Http\Model\Business;
 use App\Http\Model\BusinessImg;
 use App\Http\Model\Common;
@@ -28,21 +29,18 @@ class ClientUsersController extends BaseController
     {
         if ($request->method() == 'POST'){
              $id = ClientUsers::getUsers(['id'])['id'];
-             $file =  Input::file('headimgurl');
              $data = [
                 'name'=>$request->get('name'),
-                'sex'=>$request->get('sex')
+                'sex'=>$request->get('sex'),
+                'birthday'=>$request->get('birthday')
              ];
-             if ($file){
-                $headimgurl =  ClientUsers::uploadFile($file);
-                 if ($headimgurl){
-                     $data = array_merge($data,['headimgurl'=>$headimgurl]);
-                 }
-             }
              $re =ClientUsers::where('id',$id)->update($data);
              return $re?$this->jsonEncode(1,'编辑成功'):$this->jsonEncode(0,'编辑失败');
         }else{
-            $data = ClientUsers::getUsers(['users_id','name','sex','phone','headimgurl']);
+            $data = ClientUsers::getUsers(['users_id','name','sex','phone','headimgurl','birthday']);
+            $data['headimgurl']= config('language.url').$data['headimgurl'];
+            $is_distributor =  ApplyRecord::where('client_users_id',$data['users_id'])->where('status',2)->select(['id'])->first();
+            $data['is_distributor'] = $is_distributor?true:false;
             return $this->jsonEncode(1,'成功',$data);
         }
 
@@ -148,6 +146,26 @@ class ClientUsersController extends BaseController
             $new_data = Common::map($data,'day','day');
             return $this->jsonEncode(1,'成功',$new_data);
         }
+    }
+
+
+    /**
+     * 上传头像
+     * @return string
+     */
+    public function uploadHeadimgurl(){
+        $file =  Input::file('headimgurl');
+        if ($file){
+            $headimgurl =  ClientUsers::uploadFile($file);
+            if ($headimgurl){
+                $id = ClientUsers::getUsers(['id'])['id'];
+                if( ClientUsers::where('id',$id)->update(['headimgurl'=>$headimgurl])){
+                    return $this->jsonEncode(1,'成功',['headimgurl'=>config('language.url').$headimgurl]);
+                }
+                return $this->jsonEncode(0,'更新失败');
+            }
+        }
+        return $this->jsonEncode(0,'请上传头像文件');
     }
 
 }

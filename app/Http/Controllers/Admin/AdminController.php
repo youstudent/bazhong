@@ -35,11 +35,11 @@ class AdminController extends Controller
         if ($request->isMethod('post')){
             $model = new User();
             if ($model->add($request->all())){
-                return redirect('admin/index');
+                return redirect('admin/admin/index');
             }
-            return redirect('admin/create');
+            return redirect('admin/admin/create');
         }else{
-            return view('auth.register');
+            return view('auth.create');
         }
     }
 
@@ -67,9 +67,9 @@ class AdminController extends Controller
         if ($request->isMethod('post')){
             $model = new User();
             if ($model->edit($request->all())){
-                return redirect('admin/index');
+                return redirect('admin/admin/index');
             }
-            return redirect('admin/edit?id='.$request->get('id'));
+            return redirect('admin/admin/edit?id='.$request->get('id'));
         }else{
             $data = User::find($request->get('id'));
             return view('auth.edit',['data'=>$data]);

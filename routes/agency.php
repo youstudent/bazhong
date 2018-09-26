@@ -12,6 +12,7 @@ Route::group(['namespace' => 'Agency\Controller','middleware'=>'auth:business'],
     Route::group(['prefix'=>'activity'],function (){
          Route::get('/index','ActivityController@index');
          Route::match(['get','post'],'/create','ActivityController@create');
+         Route::get('/details/{id}','ActivityController@details');
     });
 });
 

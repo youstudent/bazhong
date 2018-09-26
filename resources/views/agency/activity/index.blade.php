@@ -124,17 +124,13 @@
                 type:'get',
                 success:function (res) {
                     layer.closeAll('loading');
-                    var a = res.data.theme;
+                    var a = res.data;
                     if(res.code==1){
                         layer.open({
                             type: 1,
                             skin: 'layui-layer-rim', //加上边框
                             area: ['800px', '500px'], //宽高
-                            content: '<table class="table table-hover table-bordered text-center table-striped">' +
-                            "<tr><td>主题</td><td>吃东西</td></tr>" +
-                            "<tr><td>地址</td><td>成都市</td></tr>" +
-                            "<tr><td>图片</td><td>图片</td></tr>" +
-                            '</table>'
+                            content: a
                         });
                     }else {
                         reload(res.message,5)
