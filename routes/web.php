@@ -12,15 +12,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::group(['middleware'=>'auth:web','namespace'=>'admin'], function(){
+Route::group(['middleware'=>'auth:web','namespace'=>'Admin'], function(){
     //首页
     Route::get('/index/index','IndexController@index');
+
+    //商家管理
     Route::group(['prefix'=>'business'], function(){
         Route::get('/index','BusinessController@index');
         Route::get('/delete/{id}','BusinessController@delete');
         Route::match(['get','post'],'/create','BusinessController@create');
         Route::match(['get','post'],'/edit','BusinessController@edit');
         Route::delete('/del','BusinessController@del');
+        Route::get('/categoryList','BusinessController@categoryList');
+        Route::match(['get','post'],'/categoryEdit','BusinessController@categoryEdit');
+        Route::get('/status/{id}/{status}','BusinessController@status');
     });
 
 //广告位管理
@@ -28,18 +33,13 @@ Route::group(['middleware'=>'auth:web','namespace'=>'admin'], function(){
         Route::get('/index','BannerController@index');
         Route::get('/record','BannerController@record');
         Route::match(['get','post'],'/edit','BannerController@edit');
-
     });
-
-
 //活动管理
     Route::group(['prefix'=>'activity'],function (){
         Route::get('/index','ActivityController@index');
         Route::get('/status/{id}','ActivityController@status');
         Route::get('/details/{id}','ActivityController@details');
-
     });
-
 //邮件管理
     Route::group(['prefix'=>'email'],function (){
         Route::get('/index','EmailController@index');

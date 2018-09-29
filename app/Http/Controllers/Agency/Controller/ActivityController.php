@@ -84,4 +84,16 @@ class ActivityController extends AgencyController
     }
 
 
+    /**
+     * 历史活动
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function history(Request $request){
+        $model = new Activity();
+        $data = $model->getHistoryList($request->all());
+        return view('agency.activity.history',$data);
+    }
+
+
 }

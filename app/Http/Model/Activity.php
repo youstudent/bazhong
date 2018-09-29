@@ -79,7 +79,7 @@ class Activity extends Model
 
 
     public function getBusiness(){
-        return $this->hasOne(Business::class,'shop_id','shop_id')->select(['name']);
+        return $this->hasOne(Business::class,'id','shop_id')->select(['name']);
     }
 
 }

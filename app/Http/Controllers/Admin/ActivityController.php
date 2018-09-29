@@ -43,7 +43,7 @@ class ActivityController extends Controller
                    $re->remarks = $remarks;
                }
                $re->save();
-               return ['code'=>0,'message'=>'处理成功'];
+               return ['code'=>1,'message'=>'处理成功'];
            }
         return ['code'=>0,'message'=>'数据不存在!'];
     }

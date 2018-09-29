@@ -165,6 +165,7 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Mrgoon\AliSms\ServiceProvider::class,
         HuangYi\Rbac\RbacServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
 
     ],
 
@@ -219,6 +220,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'AliSms'=>Mrgoon\AliSms\ServiceProvider::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
 
     ],
 

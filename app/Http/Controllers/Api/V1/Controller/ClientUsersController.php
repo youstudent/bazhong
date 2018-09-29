@@ -37,10 +37,12 @@ class ClientUsersController extends BaseController
              $re =ClientUsers::where('id',$id)->update($data);
              return $re?$this->jsonEncode(1,'编辑成功'):$this->jsonEncode(0,'编辑失败');
         }else{
-            $data = ClientUsers::getUsers(['users_id','name','sex','phone','headimgurl','birthday']);
+            $data = ClientUsers::getUsers(['users_id','name','sex','phone','headimgurl','birthday','identity_type']);
             $data['headimgurl']= config('language.url').$data['headimgurl'];
             $is_distributor =  ApplyRecord::where('client_users_id',$data['users_id'])->where('status',2)->select(['id'])->first();
             $data['is_distributor'] = $is_distributor?true:false;
+            $is_distributor =  ApplyRecord::where('client_users_id',$data['users_id'])->whereIn('status',[1,2])->select(['id'])->first();
+            $data['is_apply'] = $is_distributor?false:true;
             return $this->jsonEncode(1,'成功',$data);
         }
 
@@ -90,13 +92,14 @@ class ClientUsersController extends BaseController
             ->first();
         if ($row){
             $row->delete();
+            return $this->jsonEncode(1,'取消成功',false);
         }else{
             ClientUsersCollection::create([
                 'client_users_id'=>$users['id'],
                 'business_id' => $business_id
             ]);
+            return $this->jsonEncode(1,'收藏成功',true);
         }
-        return $this->jsonEncode(1,'成功');
     }
 
 

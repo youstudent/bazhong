@@ -29,12 +29,13 @@ class Activity extends Model
      */
     public function getList($search){
         //初始化时间
+        $users = request()->user();
         $time = $this->initTime($search);
         $keyword =  request('keyword')?request('keyword'):'';
         $select = request('select')?request('select'):'1';
         $status = request('status')?request('status'):'';
         $data = self::select(['id','created_at','theme','shop_id','activity_time','status'])
-            ->where('created_at','>',$time[0])->where('created_at','<',$time[1])
+            ->where('created_at','>',$time[0])->where('created_at','<',$time[1])->where('shop_id',$users['id'])
             ->where(function ($query) use ($select,$keyword,$status) {
                 if ($select && $keyword) {
                     if (request('select')!=='1'){
@@ -46,7 +47,12 @@ class Activity extends Model
                 }
 
                 if ($status){
-                    $query->where('status',$status);
+                    if ($status ==4){
+                        $query->where('activity_end_date','>',date('Y-m-d H:i:s'));
+                        $query->where('status',2);
+                    }else{
+                        $query->where('status',$status);
+                    }
                 }
             })
             ->orderBy('id', 'desc')
@@ -93,19 +99,56 @@ class Activity extends Model
             $data['img'] = $img['path'];
         }
         $res = self::create([
-            'shop_id'=>525011,
+            'shop_id'=>request()->user()['id'],
             'img'=>$data['img'],
             'theme'=>$data['theme'],
             'content'=>$data['content'],
             'activity_address'=>$data['activity_address'],
             'activity_time'=>$data['activity_time'],
             'activity_date'=>$data['activity_date'],
-            'activity_end_date'=>explode(' - ',$data['activity_time'])[1]. explode(' - ',$data['activity_time'])[1]
+
+            'activity_end_date'=>explode(' - ',$data['activity_date'])[1].' '. explode(' - ',$data['activity_time'])[1]
         ]);
         if ($res){
             return true;
         }
         return false;
+    }
+
+
+    /**
+     * 获取玩家列表
+     * @param $search
+     * @return array
+     */
+    public function getHistoryList($search){
+        //初始化时间
+        $time = $this->initTime($search);
+        $keyword =  request('keyword')?request('keyword'):'';
+        $select = request('select')?request('select'):'1';
+        $data = self::select(['id','created_at','theme','shop_id','activity_time','status'])
+            ->where('created_at','>',$time[0])->where('created_at','<',$time[1])
+            ->where(function ($query) use ($select,$keyword) {
+                if ($select && $keyword) {
+                    if (request('select')!=='1'){
+                        $query->where($select, 'like', '%' . $keyword . '%');
+                    }else{
+                        $query->orWhere('theme', 'like', '%' . $keyword . '%');
+                    }
+                }
+                $query->where('activity_end_date','<',date('Y-m-d H:i:s'));
+                $query->where('status',2);
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(config('language.pages'));
+        //追加额外参数，例如搜索条件
+        $appendData = $data->appends(array(
+            'time'=>request('time')?request('time'):$this->time,
+            'keyword'=>$keyword,
+            'select' =>$select,
+            'page' =>request('page')?request('page'):'1',
+        ));
+        return ['datas'=>$appendData,'time'=>$this->time];
     }
 
 }

@@ -26,7 +26,7 @@
                     <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
                     <!-- /.box-header -->
                     <!-- form start -->
-                    <form class="form-horizontal" method="post" role="form" id="payModalForm" action="{{url('email/create')}}" enctype="multipart/form-data">
+                    <form class="form-horizontal" method="post" role="form" id="payModalForm" action="{{url('admin/email/create')}}" enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <div class="form-group">
                             <label for="title" class="col-sm-2 control-label">标题<span style="color: red">&nbsp;*</span></label>

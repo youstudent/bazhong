@@ -11,7 +11,9 @@ Route::group(['namespace' => 'Agency\Controller','middleware'=>'auth:business'],
     //活动模块
     Route::group(['prefix'=>'activity'],function (){
          Route::get('/index','ActivityController@index');
+         Route::get('/history','ActivityController@history'); //历史活动
          Route::match(['get','post'],'/create','ActivityController@create');
+         Route::get('/details/{id}','ActivityController@details');
          Route::get('/details/{id}','ActivityController@details');
     });
 });

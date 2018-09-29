@@ -81,13 +81,13 @@
                         <div class="form-group">
                             <label for="intro" class="col-sm-2 control-label">简介</label>
                             <div class="col-sm-7">
-                                <textarea class="form-control" name="intro" id="intro" rows="3" placeholder="Enter ...">{{$data['shop_position']}}</textarea>
+                                <textarea class="form-control" maxlength="100" name="intro" id="intro" rows="3" placeholder="限定字数100">{{$data['intro']}}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="shop_position" class="col-sm-2 control-label">logo图片<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-7">
-                                <input id="file-1" name="shop_img" class="file" type="file" accept="image/png,image/gif">
+                                <input id="file-1" name="shop_img" class="file" type="file" accept=".png,.gif,.jpg">
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
@@ -147,7 +147,7 @@
            },
            initialPreview: [ //预览图片的设置
                <?php foreach ($img as $value){
-               echo "\""."<img src='{$value['img']}' class='file-preview-image' alt='肖像图片' title='肖像图片'>"."\"".",";
+               echo "\""."<img src='/storage/{$value['img']}' class='file-preview-image' alt='肖像图片' title='肖像图片'>"."\"".",";
                }
            ?>
            ],

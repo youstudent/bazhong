@@ -19,7 +19,7 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header" style="margin-top: 10px">
-                        <form id="lr_form" action="{{url('business/index')}}" method="get">
+                        <form id="lr_form" action="{{url('/admin/business/index')}}" method="get">
                             <div class="form-inline">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
@@ -76,6 +76,7 @@
                                 <th>邮箱</th>
                                 <th>创建时间</th>
                                 <th>访问量</th>
+                                <th>状态</th>
                                 <th>操作</th>
                             </tr>
                             <?php $i=1?>
@@ -91,6 +92,18 @@
                                     <td>{{$data['created_at']}}</td>
                                     <td>{{$data['browsing_num']}}</td>
                                     <td>
+                                        @if($data['status'] == 1)
+                                            <span class="label bg-success">正常</span>
+                                        @else
+                                            <span class="label bg-success">停封</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($data['status']==1)
+                                            <a hrefs="{{url('/admin/business/status')}}/{{$data['id']}}/2" class="btn btn-default btn-sm refuse"><i class="fa fa-fw fa-close"></i>停封</a>
+                                            @else
+                                            <a hrefs="{{url('/admin/business/status')}}/{{$data['id']}}/1" class="btn btn-default btn-sm delete"><i class="fa fa-fw fa-check"></i>解封</a>
+                                        @endif
                                         <a href="{{url('/admin/activity/index')}}?select=shop_id&keyword={{$data['shop_id']}}" class="btn btn-default btn-sm"><i class="fa fa-fw fa-folder-open-o"></i>活动管理</a>
                                         <a href="{{url('/admin/business/edit')}}?id={{$data['id']}}" class="btn btn-default btn-sm"><i class="fa fa-fw fa-pencil"></i>修改</a>&nbsp;
                                         <a hrefs="{{url('/admin/business/delete')}}/{{$data['id']}}" class="btn btn-default btn-sm delete"><i class="fa fa-fw fa-trash"></i>删除</a>
@@ -113,4 +126,34 @@
         </div>
 
     </section>
+@endsection
+@section('script')
+    <script type="text/javascript">
+        //平台用户充值
+        $(".refuse").click(function () {
+            //询问框
+            var url = $(this).attr("hrefs");
+            layer.prompt({
+                formType: 2,
+                title: '请输入拒绝的理由',
+                offset: ['40%', '40%']
+            }, function(value, index, elem){
+                layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+                $.ajax({
+                    url:url,
+                    type:'get',
+                    data:{remarks:value},
+                    success:function (res) {
+                        layer.close(index);
+                        if(res.code == 1)
+                        {
+                            reload(res.message,1)
+                        }else{
+                            reload(res.message,5)
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

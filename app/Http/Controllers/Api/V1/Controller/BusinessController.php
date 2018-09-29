@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Api\V1\Controller;
 
 
 
+use App\Http\Controllers\Api\Model\ClientUsers;
+use App\Http\Controllers\Api\Model\ClientUsersCollection;
 use App\Http\Model\Activity;
 use App\Http\Model\Business;
 use App\Http\Model\BusinessImg;
@@ -104,6 +106,7 @@ class BusinessController extends BaseController
      * @return string
      */
     public function getDetails(Request $request){
+        $users = ClientUsers::getUsers(['id']);
         $id = $request->get('id');
         $data= Business::where('id',$id)->select(['main_points','shop_img','name','category_id','sales_type','intro','phone','browsing_num','shop_position'])->first()->toArray();
         $url= config('language.url');
@@ -111,8 +114,15 @@ class BusinessController extends BaseController
         $re =  BusinessImg::select(['img'])->where('business_id',$id)->get()->toArray();
         $data['banner_img']= [];
         if ($re){
+            foreach ($re as &$value){
+                $value['img'] = $url.$value['img'];
+            }
+        }
+        if ($re){
             $data['banner_img'] =  $re;
         }
+        $collection = ClientUsersCollection::where('client_users_id',$users['id'])->where('business_id',$id)->select(['business_id','client_users_id'])->get()->toArray();
+        $data['is_collection'] = $collection?true:false;
         return $this->jsonEncode(1,'成功',$data);
 
     }

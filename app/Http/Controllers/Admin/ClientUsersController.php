@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Model\ApplyRecord;
 use App\Http\Model\ClientUsers;
 use App\Http\Model\Ptc;
+use App\User;
 use Illuminate\Http\Request;
 
 class ClientUsersController extends Controller
@@ -60,6 +61,9 @@ class ClientUsersController extends Controller
     public function status($id,$status){
         $re = ApplyRecord::find($id);
         $re->status = $status;
+        if ($status==2){
+            ClientUsers::where('users_id',$re['client_users_id'])->update(['identity_type'=>'经销商']);
+        }
         return $re->save()?['code'=>1,'message'=>'处理成功']:['code'=>0,'message'=>'处理失败'];
     }
 

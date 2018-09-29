@@ -9,6 +9,7 @@
 namespace App\Http\Model;
 
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Common
 {
@@ -62,6 +63,18 @@ class Common
         } else {
             return $default;
         }
+    }
+
+    /**
+     * 上传二维码图片
+     * @param $id
+     * @return string
+     */
+    public static function qrCode($id){
+        $fileNamePath ='qrcodes/'. date('Y-m-d').rand(10000,99999).'.png';
+        QrCode::format('png')->size(200)->margin(1)->merge('/public/qrcodes/1.png',.15)->generate("{'id':$id}",public_path($fileNamePath));
+        return $fileNamePath;
+
     }
 
 }

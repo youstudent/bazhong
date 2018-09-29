@@ -19,19 +19,21 @@
     <section class="content">
         <div class="row">
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <a style="color:#000;" href="{{url('/agency/index/message')}}">
                 <div class="info-box">
                     <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
-
                     <div class="info-box-content">
                         <span class="info-box-text">消息</span>
                         <span class="info-box-number">{{$emailCount}}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
+                </a>
                 <!-- /.info-box -->
             </div>
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <a style="color:#000;" href="{{url('/agency/activity/index')}}">
                 <div class="info-box">
                     <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
 
@@ -41,10 +43,12 @@
                     </div>
                     <!-- /.info-box-content -->
                 </div>
+                </a>
                 <!-- /.info-box -->
             </div>
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <a style="color:#000;" href="{{url('/agency/activity/index')}}?status=4">
                 <div class="info-box">
                     <span class="info-box-icon bg-yellow"><i class="fa fa-files-o"></i></span>
 
@@ -54,10 +58,12 @@
                     </div>
                     <!-- /.info-box-content -->
                 </div>
+                </a>
                 <!-- /.info-box -->
             </div>
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <a style="color:#000;" href="{{url('/agency/activity/index')}}?status=3">
                 <div class="info-box">
                     <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
 
@@ -67,6 +73,7 @@
                     </div>
                     <!-- /.info-box-content -->
                 </div>
+                </a>
                 <!-- /.info-box -->
             </div>
             <!-- /.col -->
@@ -99,7 +106,7 @@
                         <div class="form-group">
                             <label for="intro" class="col-sm-2 control-label">简介<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-7">
-                                <textarea name="intro" class="form-control" id="intro" rows="3" placeholder="简介内容" required>{{$data['intro']}}</textarea>
+                                <textarea name="intro" class="form-control" id="intro" rows="3" placeholder="活动内容.限定字数100" maxlength="100" required>{{$data['intro']}}</textarea>
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />

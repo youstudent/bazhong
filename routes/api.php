@@ -49,14 +49,14 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1\Controller'], f
         $api->get("/getCategory",'BusinessController@getCategory');
         $api->get("/activityList",'BusinessController@activityList');
         $api->get('/hostSearch','BusinessController@hotSearch'); // 热门搜索
-        $api->get('/getDetails','BusinessController@getDetails');
         $api->get('/getCategoryList','BusinessController@getCategoryList'); // 商家分类
         $api->get('/activityDetail','BusinessController@activityDetail'); // 活动详情
+        $api->get('/getDetails','BusinessController@getDetails')->middleware('api.auth'); //该路由单独使用中间件
     });
-
     //广告
     $api->group(['prefix'=>'banner'], function($api){
         $api->get("/index", 'BannerController@index');
         $api->post("/signUp", 'BannerController@signUp');
+        $api->post("/detail", 'BannerController@detail');
     });
 });

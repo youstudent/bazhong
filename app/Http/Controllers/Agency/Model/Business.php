@@ -40,29 +40,31 @@ class Business extends Authenticatable
      * @return array
      */
     public function getCount(){
-        $emailCount = Email::select(['id'])->where('category_id',1)->orWhere('business_id',2)->count();
-        $activityCount = Activity::where('shop_id',525011)->select(['id'])->count();
-        $activityIngCount = 10;
-        $activityRefuseCount = Activity::where('shop_id',525011)->where('status',3)->select(['id'])->count();
-        $data = Business::select(['id','name','intro','shop_img','shop_position'])->where('id',53)->first()->toArray();
+        $users = request()->user();
+        $emailCount = Email::select(['id'])->whereIn('category_id',[$users['category_id'],0])->whereIn('business_id',[$users['id'],0])->count();
+        $activityCount = Activity::where('shop_id',$users['id'])->count();
+        $activityIngCount = Activity::where('shop_id',$users['id'])->where('status',2)->where('activity_end_date','>',date('Y-m-d H:i:s'))->count();
+        $activityRefuseCount = Activity::where('shop_id',$users['id'])->where('status',3)->select(['id'])->count();
+        $data = Business::select(['id','name','intro','shop_img','shop_position'])->where('id',$users['id'])->first()->toArray();
         return ['emailCount'=>$emailCount,'activityCount'=>$activityCount,'activityIngCount'=>$activityIngCount,'activityRefuseCount'=>$activityRefuseCount,'data'=>$data];
     }
 
 
     /**
-     * 获取玩家列表
+     * 获取消息
      * @param $search
      * @return array
      */
     public function getList($search){
         //初始化时间
+        $users = request()->user();
         $time = $this->initTime($search);
         $keyword =  request('keyword')?request('keyword'):'';
         $select = request('select')?request('select'):'1';
         $data = Email::select(['id','created_at','title','content'])
             ->where('created_at','>',$time[0])->where('created_at','<',$time[1])
-            ->where(function ($query) use ($select,$keyword) {
-                $query->where('business_id',51)->orWhere('category_id',2);
+            ->where(function ($query) use ($select,$keyword,$users) {
+                $query->whereIn('business_id',[$users['id'],0])->WhereIn('category_id',[$users['category_id'],0]);
                 if ($select && $keyword) {
                     if (request('select')!=='1'){
                         $query->where($select, 'like', '%' . $keyword . '%');
@@ -114,13 +116,15 @@ class Business extends Authenticatable
 
 
     public static function getEmailCount(){
-        $emailCount = Email::select(['id'])->where('category_id',1)->orWhere('business_id',2)->count();
+        $users = request()->user();
+        $emailCount = Email::select(['id'])->where('category_id',$users['category_id'])->orWhere('business_id',$users['id'])->count();
         return $emailCount;
     }
 
 
     public static function getEmail(){
-        $email = Email::where('category_id',1)->orWhere('business_id',2)->get()->toArray();
+        $users = request()->user();
+        $email = Email::where('category_id',$users['category_id'])->orWhere('business_id',$users['id'])->get()->toArray();
         return $email;
     }
 }

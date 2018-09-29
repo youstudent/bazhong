@@ -325,7 +325,8 @@
             </span>
           </a>
           <ul class="treeview-menu" style="display: {{explode('/',\Request::getRequestUri())[2]=='business'?'block':'none'}};">
-            <li class="{{$_SERVER['REDIRECT_URL']=='/admin/business/index'?'active':''}}"><a  href="{{url('/admin/business/index')}}"><i class="fa fa-circle-o"></i>商家列表</a></li>
+            <li class="{{\Request::getRequestUri()=='/admin/business/index'?'active':''}}"><a  href="{{url('/admin/business/index')}}"><i class="fa fa-circle-o"></i>商家列表</a></li>
+            <li class="{{\Request::getRequestUri()=='/admin/business/categoryList'?'active':''}}"><a  href="{{url('/admin/business/categoryList')}}"><i class="fa fa-circle-o"></i>分类列表</a></li>
           </ul>
         </li>
         <li class="treeview {{explode('/',\Request::getRequestUri())[2]=='activity'?'menu-open':''}}">
@@ -350,8 +351,8 @@
             </span>
           </a>
           <ul class="treeview-menu" style="display: {{explode('/',\Request::getRequestUri())[2]=='banner'?'block':'none'}};" >
-            <li class="{{$_SERVER['REDIRECT_URL']=='/admin/banner/index'?'active':''}}"><a href="{{url('admin/banner/index')}}"><i class="fa fa-circle-o"></i>广告列表</a></li>
-            <li class="{{$_SERVER['REDIRECT_URL']=='/admin/banner/record'?'active':''}}"><a href="{{url('admin/banner/record')}}"><i class="fa fa-circle-o"></i>报名统计</a></li>
+            <li class="{{\Request::getRequestUri()=='/admin/banner/index'?'active':''}}"><a href="{{url('admin/banner/index')}}"><i class="fa fa-circle-o"></i>广告列表</a></li>
+            <li class="{{\Request::getRequestUri()=='/admin/banner/record'?'active':''}}"><a href="{{url('admin/banner/record')}}"><i class="fa fa-circle-o"></i>报名统计</a></li>
           </ul>
         </li>
         <li class="treeview {{explode('/',\Request::getRequestUri())[2]=='email'?'menu-open':''}}">
@@ -363,7 +364,7 @@
             </span>
           </a>
           <ul class="treeview-menu" style="display: {{explode('/',\Request::getRequestUri())[2]=='email'?'block':'none'}};">
-            <li class="{{$_SERVER['REDIRECT_URL']=='/admin/email/index'?'active':''}}"><a href="{{url('admin/email/index')}}"><i class="fa fa-circle-o"></i> 邮件列表</a></li>
+            <li class="{{\Request::getRequestUri()=='/admin/email/index'?'active':''}}"><a href="{{url('admin/email/index')}}"><i class="fa fa-circle-o"></i> 邮件列表</a></li>
           </ul>
         </li>
         <li class="treeview {{explode('/',\Request::getRequestUri())[2]=='client_users'?'menu-open':''}}">
@@ -375,9 +376,9 @@
             </span>
           </a>
           <ul class="treeview-menu" style="display: {{explode('/',\Request::getRequestUri())[2]=='client_users'?'block':'none'}};">
-            <li class="{{$_SERVER['REDIRECT_URL']=='/admin/client_users/index'?'active':''}}"><a href="{{url('admin/client_users/index')}}"><i class="fa fa-circle-o"></i>用户列表</a></li>
-            <li class="{{$_SERVER['REDIRECT_URL']=='/admin/client_users/cardRecord'?'active':''}}"><a href="{{url('admin/client_users/cardRecord')}}"><i class="fa fa-circle-o"></i>打卡记录</a></li>
-            <li class="{{$_SERVER['REDIRECT_URL']=='/admin/client_users/applyRecord'?'active':''}}"><a href="{{url('admin/client_users/applyRecord')}}"><i class="fa fa-circle-o"></i>经销商申请</a></li>
+            <li class="{{\Request::getRequestUri()=='/admin/client_users/index'?'active':''}}"><a href="{{url('admin/client_users/index')}}"><i class="fa fa-circle-o"></i>用户列表</a></li>
+            <li class="{{\Request::getRequestUri()=='/admin/client_users/cardRecord'?'active':''}}"><a href="{{url('admin/client_users/cardRecord')}}"><i class="fa fa-circle-o"></i>打卡记录</a></li>
+            <li class="{{\Request::getRequestUri()=='/admin/client_users/applyRecord'?'active':''}}"><a href="{{url('admin/client_users/applyRecord')}}"><i class="fa fa-circle-o"></i>经销商申请</a></li>
           </ul>
         </li>
         <li class="treeview {{explode('/',\Request::getRequestUri())[2]=='admin'?'menu-open':''}}">
@@ -389,9 +390,9 @@
             </span>
           </a>
           <ul class="treeview-menu" style="display: {{explode('/',\Request::getRequestUri())[2]=='admin'?'block':'none'}};">
-            <li class="{{$_SERVER['REDIRECT_URL']=='/admin/admin/index'?'active':''}}"><a href="{{url('admin/admin/index')}}"><i class="fa fa-circle-o"></i>管理员列表</a></li>
-            <li><a href="{{url('admin/role/roleList')}}"><i class="fa fa-circle-o"></i>角色列表</a></li>
-            <li><a href="{{url('admin/role/permissionList')}}"><i class="fa fa-circle-o"></i>路由列表</a></li>
+            <li class="{{\Request::getRequestUri()=='/admin/admin/index'?'active':''}}"><a href="{{url('admin/admin/index')}}"><i class="fa fa-circle-o"></i>管理员列表</a></li>
+            {{--<li><a href="{{url('admin/role/roleList')}}"><i class="fa fa-circle-o"></i>角色列表</a></li>--}}
+            {{--<li><a href="{{url('admin/role/permissionList')}}"><i class="fa fa-circle-o"></i>路由列表</a></li>--}}
           </ul>
         </li>
       </ul>

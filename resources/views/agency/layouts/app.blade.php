@@ -161,6 +161,7 @@
           </a>
           <ul class="treeview-menu" style="display: {{explode('/',\Request::getRequestUri())[2]=='activity'?'block':'none'}};">
             <li class="{{\Request::getRequestUri()=='/agency/activity/index'?'active':''}}"><a href="{{url('agency/activity/index')}}"><i class="fa fa-circle-o"></i>活动列表</a></li>
+            <li class="{{\Request::getRequestUri()=='/agency/activity/history'?'active':''}}"><a href="{{url('agency/activity/history')}}"><i class="fa fa-circle-o"></i>历史活动</a></li>
           </ul>
         </li>
       </ul>

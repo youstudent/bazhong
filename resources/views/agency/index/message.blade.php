@@ -29,7 +29,7 @@
                                     <div class="form-group field-users-select">
                                         <select id="users-select" class="form-control" name="select">
                                             <option value="1">智能查询</option>
-                                            <option {{request('select')=='theme'?'selected':''}} value="theme">主题</option>
+                                            <option {{request('select')=='title'?'selected':''}} value="title">主题</option>
                                         </select>
                                     </div>
                                 </div>

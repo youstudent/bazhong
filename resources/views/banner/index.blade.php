@@ -67,6 +67,7 @@
                             @endforeach
                         </table>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
+                        <img style="width: 50%;height: 50%" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1538108801476&di=bf7596e109931e42138485238cfc6ed8&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0339339554c740000000158fc6fe40c.jpg%40600w_1l_2o_100sh.jpg">
                     </div>
                     <!-- /.box-body -->
                 </div>

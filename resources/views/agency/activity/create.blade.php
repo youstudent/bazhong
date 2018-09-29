@@ -54,13 +54,13 @@
                         <div class="form-group">
                             <label for="content" class="col-sm-2 control-label">简介<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-7">
-                                <textarea name="content" class="form-control" id="content" rows="3" placeholder="活动内容" required></textarea>
+                                <textarea name="content" class="form-control" maxlength="20" id="content" rows="3" placeholder="活动内容.限定字数20" required></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="shop_position" class="col-sm-2 control-label">logo图片<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-7">
-                                <input id="file-1" name="img" class="file" type="file" accept="image/png,image/gif,image/jpg" required>
+                                <input id="file-1" name="img" class="file" type="file" accept=".png,.gif,.jpg" required>
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
