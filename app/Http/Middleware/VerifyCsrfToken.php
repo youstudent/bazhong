@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array   定义需要排除检测的路由
      */
     protected $except = [
-        'admin/business/del'
+        'admin/business/del',
+        'admin/banner/home'
     ];
 }

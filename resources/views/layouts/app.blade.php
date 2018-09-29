@@ -327,6 +327,7 @@
           <ul class="treeview-menu" style="display: {{explode('/',\Request::getRequestUri())[2]=='business'?'block':'none'}};">
             <li class="{{\Request::getRequestUri()=='/admin/business/index'?'active':''}}"><a  href="{{url('/admin/business/index')}}"><i class="fa fa-circle-o"></i>商家列表</a></li>
             <li class="{{\Request::getRequestUri()=='/admin/business/categoryList'?'active':''}}"><a  href="{{url('/admin/business/categoryList')}}"><i class="fa fa-circle-o"></i>分类列表</a></li>
+            <li class="{{\Request::getRequestUri()=='/admin/business/option'?'active':''}}"><a  href="{{url('/admin/business/option')}}"><i class="fa fa-circle-o"></i>参数配置</a></li>
           </ul>
         </li>
         <li class="treeview {{explode('/',\Request::getRequestUri())[2]=='activity'?'menu-open':''}}">
@@ -520,9 +521,20 @@
             location.reload();
         }, 600);
     }
-//<div id="" class="layui-layer-content"><textarea class="layui-layer-input"></textarea></div>
-    //<div class="layui-layer-btn layui-layer-btn-"><a class="layui-layer-btn0">确定</a><a class="layui-layer-btn1">取消</a></div>
-    //页面层
+
+    //图片方法
+    $(".qrcode").click(function () {
+        var url = $(this).attr("hrefs");
+        var img = '<div align="center" ><img src='+url+'></div>';
+        layer.open({
+            title:'二维码图片',
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['800px', '500px'], //宽高
+            content: img
+        });
+
+    });
 
 </script>
 @yield('script')

@@ -32,7 +32,8 @@ class Banner extends Model
      */
     public function getList(){
         $data  = self::orderBy('id','asc')->get()->toArray();
-        return ['datas'=>$data];
+        $homeImg = Remarks::where('type',1)->select(['id','remarks'])->first()->toArray();
+        return ['datas'=>$data,'homeImg'=>$homeImg];
     }
 
 

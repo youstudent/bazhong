@@ -14,7 +14,7 @@ class Business extends Model
 
     //表单数据录入
     protected $fillable = [
-     'phone','name','email','intro','shop_position','password','sales_type','category_id','shop_img','shop_id','main_points','remarks'
+     'phone','name','email','intro','shop_position','password','sales_type','category_id','shop_img','shop_id','main_points_x','main_points_y','remarks','code_img'
     ];
 
 
@@ -30,7 +30,7 @@ class Business extends Model
         $keyword =  request('keyword')?request('keyword'):'';
         $select = request('select')?request('select'):'1';
         $category_id = request('category_id')?request('category_id'):'';
-        $data = self::select(['id', 'email', 'name', 'phone', 'created_at','category_id','shop_img','shop_id','browsing_num','status'])
+        $data = self::select(['id', 'email', 'name', 'phone', 'created_at','category_id','shop_img','shop_id','browsing_num','status','code_img'])
             ->where('created_at','>',$time[0])->where('created_at','<',$time[1])
             ->where(function ($query) use ($select,$keyword,$category_id) {
                 if ($select && $keyword) {
@@ -88,16 +88,21 @@ class Business extends Model
         $file =  Input::file('shop_img');
         $data =$request->all();
         $path = '/uploads';
-        $rule =['jpg','png','gif'];
+        $rule =['jpg','png','gif','jpeg'];
         if ($file){
             $img =  UploadsImg::upload_img($file,$path,$rule);
+            if (!$img){
+                return redirect('admin/business/create');
+            }
             $data['shop_img'] = $img['path'];
         }
         $data['password'] = Hash::make($data['password']);
         $data['shop_id'] = self::createCode();
-        $data['main_points'] = '30.5702000000,104.0647600000';
+        $data['main_points_x'] = '30.5702000000';
+        $data['main_points_y'] = '104.0647600000';
         $res = self::create($data);
         if ($res){
+            $res->update(['code_img'=>Common::qrCode($res->id)]);
             $files = Input::file('files');
             if ($files){
                 foreach ($files as $file){
@@ -177,4 +182,5 @@ class Business extends Model
             return $shop_id = self::createCode();
         return $shop_id;
     }
+
 }

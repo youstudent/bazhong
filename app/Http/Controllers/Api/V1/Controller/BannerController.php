@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Api\V1\Controller;
 
 use App\Http\Model\Banner;
 use App\Http\Model\BannerSign_up;
+use App\Http\Model\Remarks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -71,6 +72,15 @@ class BannerController extends BaseController
             }
         }
         return $this->jsonEncode(0,'报名失败');
+    }
+
+    /**
+     * 形象页面
+     * @return string
+     */
+    public function homeImg(){
+        $data  = Remarks::where('type',1)->select(['remarks'])->first()->toArray();
+        return $this->jsonEncode(1,'形象图片',['img'=>config('language.url').$data['remarks']]);
     }
 
 }

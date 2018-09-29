@@ -40,4 +40,10 @@ class IndexController extends AgencyController
         return view('agency.index.message',$data);
     }
 
+
+    public function qrcode(){
+
+        return view('agency.index.qrcode');
+    }
+
 }

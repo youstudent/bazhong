@@ -58,5 +58,6 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1\Controller'], f
         $api->get("/index", 'BannerController@index');
         $api->post("/signUp", 'BannerController@signUp');
         $api->post("/detail", 'BannerController@detail');
+        $api->get("/homeImg", 'BannerController@homeImg'); //形象页面图片
     });
 });

@@ -119,21 +119,29 @@ class ClientUsersController extends BaseController
     }
 
     /**
-     * 打卡记录   打卡
      * @param Request $request
      * @return string
      */
     public function ptc(Request $request){
         $users = ClientUsers::getUsers(['users_id','name']);
         if ($request->method() =='POST'){
+            $data =Business::where('id',$request->get('id'))->select(['id','name','main_points_x','main_points_y'])->first();
+            $main_points  = $request->get('main_points');
+            if (!$data || !$main_points){
+                return $this->jsonEncode(0,'参数不正确');
+            }
             $re = Ptc::where('client_users_id',$users['users_id'])->where('date',date('Y-m'))->where('day',date('d'))->select(['id'])->first();
+            //TODO 根据 用户的经纬度和商家经纬度进行对比,在误差范围内打卡
+            if (!Common::distance_calculation($main_points,$data['main_points_x'],$data['main_points_y'])){
+                return $this->jsonEncode(0,'打卡失败,不在打卡范围');
+            }
             if (!$re){
                 Ptc::create([
                     'day'=>date('d'),
                     'client_users_id'=>$users['users_id'],
                     'date'=>date('Y-m'),
-                    'shop_id'=>111,
-                    'business_name'=>'测试商家',
+                    'shop_id'=>$data['id'],
+                    'business_name'=>$data['name'],
                     'client_users_name'=>$users['name'],
                 ]);
                 return $this->jsonEncode(1,'打卡成功');

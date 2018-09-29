@@ -91,6 +91,9 @@
                                     </td>
                                     <td>
                                         <a hrefs="{{url('/agency/activity/details')}}/{{$data['id']}}" class="btn btn-default btn-sm details"><i class="fa fa-fw fa-folder-open-o"></i>详情</a>
+                                        @if($data['status']==3)
+                                            <a href="{{url('/agency/activity/edit')}}?id={{$data['id']}}" class="btn btn-default btn-sm"><i class="fa fa-fw fa-pencil"></i>修改</a>&nbsp;
+                                        @endif
                                     </td>
                                 </tr>
                             <?php $i++?>

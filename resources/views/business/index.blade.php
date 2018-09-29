@@ -72,7 +72,8 @@
                                 <th>店铺名</th>
                                 <th>分类</th>
                                 <th>电话</th>
-                                <th>logo</th>
+                                <th>logo(点击放大)</th>
+                                <th>二维码(点击放大)</th>
                                 <th>邮箱</th>
                                 <th>创建时间</th>
                                 <th>访问量</th>
@@ -87,7 +88,8 @@
                                     <td>{{$data['name']}}</td>
                                     <td>{{$data['category']['category_name']}}</td>
                                     <td>{{$data['phone']}}</td>
-                                    <td><img style="width: 100px;height: 40px" src="/storage{{$data['shop_img']}}"></td>
+                                    <td><a hrefs="/storage{{$data['shop_img']}}" class="qrcode"><img style="width: 100px;height: 40px" src="/storage{{$data['shop_img']}}"></a></td>
+                                    <td><a hrefs="{{$data['code_img']}}" class="qrcode"><img style="width: 100px;height: 40px" src="{{$data['code_img']}}"></a></td>
                                     <td>{{$data['email']}}</td>
                                     <td>{{$data['created_at']}}</td>
                                     <td>{{$data['browsing_num']}}</td>
@@ -123,6 +125,7 @@
 
                 <!-- /.box -->
             </div>
+
         </div>
 
     </section>

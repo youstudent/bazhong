@@ -16,10 +16,8 @@ class IndexController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request){
-       var_dump(Common::qrCode(5));
         $model = new User();
         $data= $model->getCount();
         return view('index.index',$data);
     }
-
 }

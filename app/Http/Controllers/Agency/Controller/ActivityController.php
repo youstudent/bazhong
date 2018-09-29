@@ -96,4 +96,24 @@ class ActivityController extends AgencyController
     }
 
 
+    /**
+     * 修改被拒绝的活动
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function edit(Request $request){
+        if ($request->isMethod('post')){
+            $model = new Activity();
+            if ($model->edit($request)){
+                return redirect('admin/activity/index');
+            }
+            return redirect('admin/activity/edit?id='.$request->get('id'));
+        }else{
+            $data = Activity::find($request->get('id'));
+            return view('agency.activity.edit',['data'=>$data]);
+        }
+
+    }
+
+
 }

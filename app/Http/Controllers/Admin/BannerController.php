@@ -10,8 +10,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Model\Banner;
 use App\Http\Model\BannerSign_up;
+use App\Http\Model\Common;
+use App\Http\Model\Remarks;
+use App\UploadsImg;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
 
 class BannerController extends Controller
 {
@@ -54,6 +58,24 @@ class BannerController extends Controller
         $model = new BannerSign_up();
         $data = $model->getList($request->all());
         return view('banner.record',$data);
+    }
+
+
+    /**
+     * 上床形象图片
+     * @param Request $request
+     * @return int
+     */
+    public function home(Request $request){
+      $remarks = Input::file('remarks');
+      if ($remarks){
+          $img =  UploadsImg::upload_img($remarks,'/uploads',['jpg','png','gif']);
+          Remarks::where('type',1)->update([
+             'remarks'=>$img['path']
+          ]);
+      }
+      return 1;
+
     }
 
 }

@@ -108,7 +108,7 @@ class BusinessController extends BaseController
     public function getDetails(Request $request){
         $users = ClientUsers::getUsers(['id']);
         $id = $request->get('id');
-        $data= Business::where('id',$id)->select(['main_points','shop_img','name','category_id','sales_type','intro','phone','browsing_num','shop_position'])->first()->toArray();
+        $data= Business::where('id',$id)->select(['main_points_x','main_points_y','shop_img','name','category_id','sales_type','intro','phone','browsing_num','shop_position'])->first()->toArray();
         $url= config('language.url');
         $data['shop_img'] = $url.$data['shop_img'];
         $re =  BusinessImg::select(['img'])->where('business_id',$id)->get()->toArray();
@@ -123,6 +123,7 @@ class BusinessController extends BaseController
         }
         $collection = ClientUsersCollection::where('client_users_id',$users['id'])->where('business_id',$id)->select(['business_id','client_users_id'])->get()->toArray();
         $data['is_collection'] = $collection?true:false;
+        $data['main_points'] = $data['main_points_x'].','.$data['main_points_y'];
         return $this->jsonEncode(1,'成功',$data);
 
     }

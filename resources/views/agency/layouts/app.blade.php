@@ -151,6 +151,7 @@
         <li class="header">管理中心</li>
         <li class="{{\Request::getRequestUri()=='/agency/index/index'?'active':''}}"><a href="{{url('/agency/index/index')}}"><i class="fa fa-dashboard"></i>店铺信息</a></li>
         <li class="{{\Request::getRequestUri()=='/agency/index/message'?'active':''}}"><a href="{{url('/agency/index/message')}}"><i class="fa fa-dashboard"></i>消息管理</a></li>
+        <li class="{{\Request::getRequestUri()=='/agency/index/qrcode'?'active':''}}"><a href="{{url('/agency/index/qrcode')}}"><i class="fa fa-dashboard"></i>二维码</a></li>
         <li class="treeview {{explode('/',\Request::getRequestUri())[2]=='activity'?'menu-open':''}}" >
           <a href="#">
             <i class="fa fa-pie-chart"></i>

@@ -71,10 +71,36 @@ class Common
      * @return string
      */
     public static function qrCode($id){
-        $fileNamePath ='qrcodes/'. date('Y-m-d').rand(10000,99999).'.png';
+        $fileNamePath ='/qrcodes/'. date('Y-m-d').rand(10000,99999).'.png';
         QrCode::format('png')->size(200)->margin(1)->merge('/public/qrcodes/1.png',.15)->generate("{'id':$id}",public_path($fileNamePath));
         return $fileNamePath;
+    }
 
+
+    /**
+     * 客户端经纬度和商家经纬度距离计算
+     * @param $main_points1
+     * @param $main_points_x2
+     * @param $main_points_y2
+     */
+    public static function distance_calculation($main_points1,$main_points_x2,$main_points_y2) {
+        $main_points = explode(',',$main_points1);
+        $lng1 = $main_points[0];
+        $lat1 = $main_points[1];
+        $lng2 = $main_points_x2;
+        $lat2 = $main_points_y2;
+        // 将角度转为狐度
+        $radLat1 = deg2rad($lat1); //deg2rad()函数将角度转换为弧度
+        $radLat2 = deg2rad($lat2);
+        $radLng1 = deg2rad($lng1);
+        $radLng2 = deg2rad($lng2);
+        $a = $radLat1 - $radLat2;
+        $b = $radLng1 - $radLng2;
+        $s = 2 * asin(sqrt(pow(sin($a / 2), 2) + cos($radLat1) * cos($radLat2) * pow(sin($b / 2), 2))) * 6378.137 * 1000;
+        if ($s>100){
+            return false;
+        }
+        return true;
     }
 
 }

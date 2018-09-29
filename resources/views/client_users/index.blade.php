@@ -62,7 +62,7 @@
                                 <th>用户名</th>
                                 <th>电话</th>
                                 <th>性别</th>
-                                <th>头像</th>
+                                <th>头像(点击放大)</th>
                                 <th>生日</th>
                                 <th>用户类型</th>
                                 <th>注册时间</th>
@@ -77,7 +77,7 @@
                                     <td>{{$data['name']}}</td>
                                     <td>{{$data['phone']}}</td>
                                     <td>{{$data['sex']==1?'男':'女'}}</td>
-                                    <td><img style='width: 50px' src='{{'/storage/'.$data['headimgurl']}}' alt=''></td>
+                                    <td><a hrefs="/storage{{$data['headimgurl']}}" class="qrcode"><img style='width: 50px' src='/storage{{$data['headimgurl']}}' alt=''></a></td>
                                     <td>{{$data['birthday']}}</td>
                                     <td>{{$data['identity_type']?$data['identity_type']:'普通用户'}}</td>
                                     <td>{{$data['created_at']}}</td>

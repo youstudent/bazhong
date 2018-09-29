@@ -23,7 +23,7 @@ class Activity extends Model
     ];
 
     /**
-     * 获取玩家列表
+     * 活动列表
      * @param $search
      * @return array
      */
@@ -149,6 +149,39 @@ class Activity extends Model
             'page' =>request('page')?request('page'):'1',
         ));
         return ['datas'=>$appendData,'time'=>$this->time];
+    }
+
+    /**
+     * 修改被拒绝的活动
+     * @param $request
+     * @return bool
+     */
+    public function edit($request){
+        $file =  Input::file('img');
+        $data =$request->all();
+        $path = '/uploads';
+        $rule =['jpg','png','gif'];
+        if ($file){
+            $img =  UploadsImg::upload_img($file,$path,$rule);
+            $data['img'] = $img['path'];
+        }
+        $res =Activity::where('id',$data['id'])->update([
+            'img'=>$data['img'],
+            'theme'=>$data['theme'],
+            'content'=>$data['content'],
+            'activity_address'=>$data['activity_address'],
+            'activity_time'=>$data['activity_time'],
+            'activity_date'=>$data['activity_date'],
+            'status'=>1,
+            'remarks'=>'',
+            'activity_end_date'=>explode(' - ',$data['activity_date'])[1].' '. explode(' - ',$data['activity_time'])[1]
+        ]);
+        if ($res){
+            return true;
+        }
+        return false;
+
+
     }
 
 }

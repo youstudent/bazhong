@@ -75,6 +75,6 @@
             </div>
             <!-- /.col -->
         </div>
-
+        <img src="/qrcodes/2018-09-2953956.png" alt="">
     </section>
 @endsection

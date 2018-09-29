@@ -35,7 +35,7 @@ class UploadsImg extends Authenticatable
             // 上传文件的后缀.
             $entension = $file -> getClientOriginalExtension();
             if(!in_array($entension,$rule)){
-                return '图片格式为jpg,png,gif';
+                return false;
             }
             // 大家对mimeType应该不陌生了. 我得到的结果是 image/jpeg.(这里要注意一点,以前我们使用 mime_content_type() ,在php5.3 之后,开始使用 fileinfo 来获取文件的mime类型.所以要加入 php_fileinfo的php拓展.windows下是 php_fileinfo.dll,在php.ini文件中将 extension=php_fileinfo.dll前面的分号去掉即可.当然要重启服务器. )
             $mimeTye = $file -> getMimeType();

@@ -87,14 +87,14 @@
                         <div class="form-group">
                             <label for="shop_position" class="col-sm-2 control-label">logo图片<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-7">
-                                <input id="file-1" name="shop_img" class="file" type="file" accept=".png,.gif,.jpg">
+                                <input id="file-1" name="shop_img" class="file" type="file" accept="image/png,image/gif,image/jpg">
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
                         <div class="form-group">
                             <label for="shop_position" class="col-sm-2 control-label">广告图片</label>
                             <div class="col-sm-7">
-                                <input id="file-2" name="files[]" type="file" multiple class="file"  data-upload-url="#" data-min-file-count="10">
+                                <input id="file-2" name="files[]" type="file" multiple class="file" accept="image/png,image/gif,image/jpg"  data-upload-url="#" data-min-file-count="10">
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />

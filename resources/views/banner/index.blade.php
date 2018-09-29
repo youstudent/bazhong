@@ -29,7 +29,7 @@
                                 <th>显示位置</th>
                                 <th>显示顺序</th>
                                 <th>宣传主题</th>
-                                <th>图片</th>
+                                <th>图片(点击放大)</th>
                                 <th>参与商家</th>
                                 <th>是否报名</th>
                                 <th>显示时间</th>
@@ -44,7 +44,7 @@
                                     <td>{{$data['show_position']==1?'顶部':'中部'}}</td>
                                     <td>{{$data['sort']}}</td>
                                     <td>{{$data['theme']}}</td>
-                                    <td><img style="width: 100px;height: 40px" src="/storage{{$data['img']}}"></td>
+                                    <td><a hrefs="/storage{{$data['img']}}" class="qrcode"><img style="width: 100px;height: 40px" src="/storage{{$data['img']}}"></a></td>
                                     <td>{{$data['business_id']}}</td>
                                     <td>{{$data['is_sign_up']==1?'是':'否'}}</td>
                                     <td>{{$data['show_start_time'].' - '.$data['show_end_time']}}</td>
@@ -67,7 +67,14 @@
                             @endforeach
                         </table>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
-                        <img style="width: 50%;height: 50%" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1538108801476&di=bf7596e109931e42138485238cfc6ed8&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0339339554c740000000158fc6fe40c.jpg%40600w_1l_2o_100sh.jpg">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">App启动广告</h3>
+                            </div>
+                            <div class="panel-body">
+                                <input id="file-1" name="remarks" class="file" type="file" accept="image/png,image/gif,image/jpg">
+                            </div>
+                        </div>
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -78,3 +85,25 @@
 
     </section>
 @endsection
+@section('script')
+    <link href="/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="/js/fileinput.js" type="text/javascript"></script>
+    <script src="/js/fileinput_locale_de.js" type="text/javascript"></script>
+    <script>
+        //logo图片
+        const shop = '/storage'+"{{$homeImg['remarks']}}";
+        const id = "{{$homeImg['id']}}";
+        $("#file-1").fileinput({
+            uploadUrl: '/admin/banner/home?id='+id, //上传的地址
+            layoutTemplates :{
+                actionUpload:'',//去除上传预览缩略图中的上传图片
+                actionZoom:''  //去除上传预览缩略图中的查看详情预览的缩略图标。
+            },
+            //showUpload:false,
+            initialPreview: [ //预览图片的设置
+                "<img  src='" + shop + "' class='file-preview-image' alt='肖像图片' title='肖像图片'>",
+            ]
+        });
+    </script>
+
+    @endsection

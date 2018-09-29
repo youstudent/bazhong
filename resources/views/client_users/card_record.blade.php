@@ -64,7 +64,7 @@
                                 <th>商家ID</th>
                                 <th>店铺名</th>
                                 <th>打卡时间</th>
-                                <th>票据</th>
+                                <th>票据(点击放大)</th>
                             </tr>
                             <?php $i=1?>
                             @foreach($datas as $data)
@@ -75,7 +75,7 @@
                                     <td>{{$data['shop_id']}}</td>
                                     <td>{{$data['business_name']}}</td>
                                     <td>{{$data['created_at']}}</td>
-                                    <td><img style="width: 100px;height: 40px" src="/storage{{$data['img']}}"></td>
+                                    <td><a hrefs="/storage{{$data['img']}}" class="qrcode"><img style="width: 100px;height: 40px" src="/storage{{$data['img']}}"></a></td>
                                 </tr>
                             <?php $i++?>
                             @endforeach

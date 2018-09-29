@@ -26,10 +26,13 @@ Route::group(['middleware'=>'auth:web','namespace'=>'Admin'], function(){
         Route::get('/categoryList','BusinessController@categoryList');
         Route::match(['get','post'],'/categoryEdit','BusinessController@categoryEdit');
         Route::get('/status/{id}/{status}','BusinessController@status');
+        Route::get('/details/{id}','BusinessController@details');
+        Route::match(['get','post'],'/option','BusinessController@option');
     });
 
 //广告位管理
     Route::group(['prefix'=>'banner'],function (){
+        Route::post('/home','BannerController@home');
         Route::get('/index','BannerController@index');
         Route::get('/record','BannerController@record');
         Route::match(['get','post'],'/edit','BannerController@edit');
