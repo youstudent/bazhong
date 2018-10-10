@@ -119,6 +119,7 @@ class ClientUsersController extends BaseController
     }
 
     /**
+     * 根据经纬度打卡
      * @param Request $request
      * @return string
      */
@@ -131,22 +132,23 @@ class ClientUsersController extends BaseController
                 return $this->jsonEncode(0,'参数不正确');
             }
             $re = Ptc::where('client_users_id',$users['users_id'])->where('date',date('Y-m'))->where('day',date('d'))->select(['id'])->first();
+            if ($re){
+                //TODO 每天仅限一次打卡,测试暂时屏蔽
+                //return $this->jsonEncode(0,'今日已经打卡');
+            }
             //TODO 根据 用户的经纬度和商家经纬度进行对比,在误差范围内打卡
             if (!Common::distance_calculation($main_points,$data['main_points_x'],$data['main_points_y'])){
                 return $this->jsonEncode(0,'打卡失败,不在打卡范围');
             }
-            if (!$re){
-                Ptc::create([
-                    'day'=>date('d'),
-                    'client_users_id'=>$users['users_id'],
-                    'date'=>date('Y-m'),
-                    'shop_id'=>$data['id'],
-                    'business_name'=>$data['name'],
-                    'client_users_name'=>$users['name'],
-                ]);
-                return $this->jsonEncode(1,'打卡成功');
-            }
-            return $this->jsonEncode(0,'今日已经打卡');
+            Ptc::create([
+                'day'=>date('d'),
+                'client_users_id'=>$users['users_id'],
+                'date'=>date('Y-m'),
+                'shop_id'=>$data['id'],
+                'business_name'=>$data['name'],
+                'client_users_name'=>$users['name'],
+            ]);
+            return $this->jsonEncode(1,'打卡成功');
         }else {
             $time =  date('Y-m');
             $reqDate =  $request->get('date');

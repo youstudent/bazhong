@@ -2,6 +2,7 @@
 @section('title')
     广告位管理
 @endsection
+<link rel="stylesheet" href="/bower_components/select2/dist/css/select2.min.css">
 @section('content')
     <!-- Main content -->
     <section class="content-header">
@@ -78,13 +79,23 @@
                                     @endforeach
                                 </select>
                             </div>
-
+                        </div>
+                        <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">参与商家<span style="color: red">&nbsp;*</span></label>
+                            <div class="col-sm-7">
+                                <select class="form-control select2" multiple="multiple" data-placeholder="选择参与商家" style="width: 100%;" name="business[]" required>
+                                    @foreach($business as $key=>$value)
+                                        <option {{in_array($key,$data['business_id'])?'selected':''}} value="{{$key}}">{{$value}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
                         <div class="form-group">
                             <label for="shop_position" class="col-sm-2 control-label">logo图片<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-7">
-                                <input id="file-1" name="img" class="file" type="file" accept=".png,.gif,.jpg">
+                                <input id="file-1" name="img" class="file" type="file" accept="image/*">
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
@@ -114,10 +125,12 @@
     </section>
 @endsection
 @section('script')
-        <link href=" /css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+        <script src="/bower_components/select2/dist/js/select2.full.min.js"></script>
+        <link href="/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
         <script src="/js/fileinput.js" type="text/javascript"></script>
         <script src="/js/fileinput_locale_de.js" type="text/javascript"></script>
     <script>
+       $('.select2').select2();
        var a = "{{$errors->first()}}";
        if (a){
            layer.msg(a+'!!', {icon: 5})

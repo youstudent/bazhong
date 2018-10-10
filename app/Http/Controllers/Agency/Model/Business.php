@@ -45,7 +45,7 @@ class Business extends Authenticatable
         $activityCount = Activity::where('shop_id',$users['id'])->count();
         $activityIngCount = Activity::where('shop_id',$users['id'])->where('status',2)->where('activity_end_date','>',date('Y-m-d H:i:s'))->count();
         $activityRefuseCount = Activity::where('shop_id',$users['id'])->where('status',3)->select(['id'])->count();
-        $data = Business::select(['id','name','intro','shop_img','shop_position'])->where('id',$users['id'])->first()->toArray();
+        $data = Business::select(['id','name','intro','shop_img','shop_position','main_points_x','main_points_y'])->where('id',$users['id'])->first()->toArray();
         return ['emailCount'=>$emailCount,'activityCount'=>$activityCount,'activityIngCount'=>$activityIngCount,'activityRefuseCount'=>$activityRefuseCount,'data'=>$data];
     }
 

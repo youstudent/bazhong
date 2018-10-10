@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Model\Business;
+use App\Http\Model\BusinessArea;
 use App\Http\Model\BusinessImg;
+use App\Http\Model\BusinessName;
 use App\Http\model\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -181,12 +183,72 @@ class BusinessController extends Controller
      * @param Request $request
      * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function option(Request $request){
-        if ($request->isMethod('POST')){
-            return ['code'=>1,'message'=>'成功'];
-        }else{
-            return view('business.option');
+    public function option(){
+        $areas = BusinessArea::select(['id','area'])->get()->toArray();
+        $names = BusinessName::select(['id','name'])->get()->toArray();
+        return view('business.option',['areas'=>$areas,'names'=>$names]);
+    }
+
+    /**
+     * 删除
+     * @param $id
+     * @return array
+     */
+    public function areaDelete($id){
+        if ($id){
+            BusinessArea::destroy($id);
+            return ['code'=>1,'message'=>'删除成功'];
         }
+        return ['code'=>0,'message'=>'数据不存在!'];
+    }
+
+
+    /**
+     * 删除
+     * @param $id
+     * @return array
+     */
+    public function nameDelete($id){
+        if ($id){
+            BusinessName::destroy($id);
+            return ['code'=>1,'message'=>'删除成功'];
+        }
+        return ['code'=>0,'message'=>'数据不存在!'];
+    }
+
+
+    /**
+     * 添加区域
+     * @param Request $request
+     * @param $type
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function createAreaName(Request $request,$type){
+        if ($type==1){
+            BusinessArea::create([
+               'area'=>$request->get('area')
+            ]);
+        }else {
+            BusinessName::create([
+                'name'=>$request->get('name')
+            ]);
+        }
+        return redirect('/admin/business/option');
+    }
+
+    /**
+     * 更新区域
+     * @param Request $request
+     * @param $id
+     * @return array
+     */
+    public function editOption(Request $request,$id){
+          if ($request->get('type')==1){
+             BusinessArea::where('id',$id)->update(['area'=>$request->get('value')]);
+          }else {
+             BusinessName::where('id',$id)->update(['name'=>$request->get('value')]);
+          }
+          return ['code'=>1,'message'=>'更新成功'];
 
     }
 }

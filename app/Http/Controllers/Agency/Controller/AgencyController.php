@@ -17,4 +17,5 @@ class AgencyController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+
 }

@@ -85,8 +85,8 @@ class Common
      */
     public static function distance_calculation($main_points1,$main_points_x2,$main_points_y2) {
         $main_points = explode(',',$main_points1);
-        $lng1 = $main_points[0];
-        $lat1 = $main_points[1];
+        $lng1 = $main_points[1];
+        $lat1 = $main_points[0];
         $lng2 = $main_points_x2;
         $lat2 = $main_points_y2;
         // 将角度转为狐度

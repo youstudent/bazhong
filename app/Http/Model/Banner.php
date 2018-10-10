@@ -21,7 +21,7 @@ class Banner extends Model
 
 
     protected $fillable = [
-        'show_position','sort'
+        'show_position','sort','business_id'
 
     ];
 
@@ -33,6 +33,12 @@ class Banner extends Model
     public function getList(){
         $data  = self::orderBy('id','asc')->get()->toArray();
         $homeImg = Remarks::where('type',1)->select(['id','remarks'])->first()->toArray();
+        foreach ($data as &$value){
+            if ($value['business_id']){
+                $re = Business::whereIn('id',json_decode($value['business_id']))->select(['name'])->get()->toArray();
+                $value['business_id'] = implode(',',Common::map($re,'name','name'));
+            }
+        }
         return ['datas'=>$data,'homeImg'=>$homeImg];
     }
 
@@ -52,8 +58,14 @@ class Banner extends Model
         return explode(' - ',$times);
     }
 
+    /**
+     * 修改图片
+     * @param $request
+     * @return mixed
+     */
     public function edit($request){
-       $data = $request->all();
+        $data = $request->all();
+        $data['business_id']  = json_encode($data['business']);
         $file =  Input::file('img');
         $path = '/uploads';
         $rule =['jpg','png','gif'];
@@ -66,6 +78,7 @@ class Banner extends Model
        $data['show_end_time'] = $initTime[1];
        unset($data['_token']);
        unset($data['time']);
+       unset($data['business']);
        return self::where(['id'=>$data['id']])->update($data);
     }
 

@@ -98,8 +98,6 @@ class Business extends Model
         }
         $data['password'] = Hash::make($data['password']);
         $data['shop_id'] = self::createCode();
-        $data['main_points_x'] = '30.5702000000';
-        $data['main_points_y'] = '104.0647600000';
         $res = self::create($data);
         if ($res){
             $res->update(['code_img'=>Common::qrCode($res->id)]);
@@ -143,6 +141,16 @@ class Business extends Model
         }
         unset($data['_token']);
         unset($data['files']);
+        if (empty($data['shop_position'])){
+            unset($data['main_points_x']);
+            unset($data['main_points_y']);
+            unset($data['shop_position']);
+        }
+        if (empty($data['password'])){
+            unset($data['password']);
+        }else{
+            $data['password'] = Hash::make($data['password']);
+        }
         $res = self::where('id',$data['id'])->update($data);
         if ($res){
             $files = Input::file('files');

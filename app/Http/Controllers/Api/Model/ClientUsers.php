@@ -86,7 +86,7 @@ class ClientUsers extends Authenticatable implements JWTSubject
      */
     public static function uploadFile($file){
         $path = '/uploads';
-        $rule =['jpg','png','gif'];
+        $rule =['jpg','png','gif','jpeg'];
         if ($file){
             $img =  UploadsImg::upload_img($file,$path,$rule);
             return $img['path'];

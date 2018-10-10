@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['middleware'=>'auth:web','namespace'=>'Admin'], function(){
+    Route::redirect('/', '/admin/index/index', 301);
     //首页
     Route::get('/index/index','IndexController@index');
 
@@ -20,6 +21,8 @@ Route::group(['middleware'=>'auth:web','namespace'=>'Admin'], function(){
     Route::group(['prefix'=>'business'], function(){
         Route::get('/index','BusinessController@index');
         Route::get('/delete/{id}','BusinessController@delete');
+        Route::get('/areaDelete/{id}','BusinessController@areaDelete');
+        Route::get('/nameDelete/{id}','BusinessController@nameDelete');
         Route::match(['get','post'],'/create','BusinessController@create');
         Route::match(['get','post'],'/edit','BusinessController@edit');
         Route::delete('/del','BusinessController@del');
@@ -28,6 +31,8 @@ Route::group(['middleware'=>'auth:web','namespace'=>'Admin'], function(){
         Route::get('/status/{id}/{status}','BusinessController@status');
         Route::get('/details/{id}','BusinessController@details');
         Route::match(['get','post'],'/option','BusinessController@option');
+        Route::post('/createAreaName/{type}','BusinessController@createAreaName');
+        Route::post('/editOption/{id}','BusinessController@editOption');
     });
 
 //广告位管理

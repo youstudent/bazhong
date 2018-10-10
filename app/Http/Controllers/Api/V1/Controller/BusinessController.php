@@ -123,7 +123,8 @@ class BusinessController extends BaseController
         }
         $collection = ClientUsersCollection::where('client_users_id',$users['id'])->where('business_id',$id)->select(['business_id','client_users_id'])->get()->toArray();
         $data['is_collection'] = $collection?true:false;
-        $data['main_points'] = $data['main_points_x'].','.$data['main_points_y'];
+        $data['main_points'] = $data['main_points_y'].','.$data['main_points_x'];
+        //$data['main_points'] = '30.5763307666,104.0712219292';
         return $this->jsonEncode(1,'成功',$data);
 
     }

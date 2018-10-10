@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Model\Banner;
 use App\Http\Model\BannerSign_up;
+use App\Http\Model\Business;
 use App\Http\Model\Common;
 use App\Http\Model\Remarks;
 use App\UploadsImg;
@@ -45,7 +46,9 @@ class BannerController extends Controller
             return redirect('/admin/banner/edit?id='.$request->get('id'));
         }else{
             $data = Banner::find($request->get('id'));
-            return view('banner.edit',['data'=>$data]);
+            $data['business_id'] = json_decode($data['business_id']);
+            $business =Common::map(Business::select('name','id')->get()->toArray(),'id','name');
+            return view('banner.edit',['data'=>$data,'business'=>$business]);
         }
 
     }

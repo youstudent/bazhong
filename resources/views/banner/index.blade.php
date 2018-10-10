@@ -45,7 +45,7 @@
                                     <td>{{$data['sort']}}</td>
                                     <td>{{$data['theme']}}</td>
                                     <td><a hrefs="/storage{{$data['img']}}" class="qrcode"><img style="width: 100px;height: 40px" src="/storage{{$data['img']}}"></a></td>
-                                    <td>{{$data['business_id']}}</td>
+                                    <td><a hrefs="{{$data['business_id']}}" class="business">查看</a></td>
                                     <td>{{$data['is_sign_up']==1?'是':'否'}}</td>
                                     <td>{{$data['show_start_time'].' - '.$data['show_end_time']}}</td>
                                     <td>{{$data['updated_at']}}</td>
@@ -103,6 +103,17 @@
             initialPreview: [ //预览图片的设置
                 "<img  src='" + shop + "' class='file-preview-image' alt='肖像图片' title='肖像图片'>",
             ]
+        });
+        //商家列表
+        $(".business").click(function () {
+            var data = $(this).attr("hrefs");
+            layer.open({
+                title:'参与商家列表',
+                type: 1,
+                skin: 'layui-layer-rim', //加上边框
+                area: ['300px', '200px'], //宽高
+                content: "商家名 : "+data
+            });
         });
     </script>
 

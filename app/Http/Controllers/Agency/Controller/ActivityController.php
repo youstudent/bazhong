@@ -105,9 +105,9 @@ class ActivityController extends AgencyController
         if ($request->isMethod('post')){
             $model = new Activity();
             if ($model->edit($request)){
-                return redirect('admin/activity/index');
+                return redirect('agency/activity/index');
             }
-            return redirect('admin/activity/edit?id='.$request->get('id'));
+            return redirect('agency/activity/edit?id='.$request->get('id'));
         }else{
             $data = Activity::find($request->get('id'));
             return view('agency.activity.edit',['data'=>$data]);
