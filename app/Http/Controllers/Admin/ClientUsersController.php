@@ -13,6 +13,7 @@ use App\Http\Model\ClientUsers;
 use App\Http\Model\Ptc;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class ClientUsersController extends Controller
 {
@@ -63,6 +64,8 @@ class ClientUsersController extends Controller
         $re->status = $status;
         if ($status==2){
             ClientUsers::where('users_id',$re['client_users_id'])->update(['identity_type'=>'经销商']);
+        }else{
+            $re->remarks = Input::get('remarks');
         }
         return $re->save()?['code'=>1,'message'=>'处理成功']:['code'=>0,'message'=>'处理失败'];
     }

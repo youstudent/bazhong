@@ -128,7 +128,7 @@ class Business extends Model
         ],['name.required'=>'店铺名不能为空','password.required'=>'密码不能为空']);
         $file =  Input::file('shop_img');
         $path = '/uploads';
-        $rule =['jpg','png','gif'];
+        $rule =['jpg','png','gif','jpeg'];
         $data= $request->all();
         if ($file){
             $img =  UploadsImg::upload_img(Input::file('shop_img'),$path,$rule);

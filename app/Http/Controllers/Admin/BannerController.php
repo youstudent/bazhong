@@ -72,7 +72,7 @@ class BannerController extends Controller
     public function home(Request $request){
       $remarks = Input::file('remarks');
       if ($remarks){
-          $img =  UploadsImg::upload_img($remarks,'/uploads',['jpg','png','gif']);
+          $img =  UploadsImg::upload_img($remarks,'/uploads',['jpg','png','gif','jpeg']);
           Remarks::where('type',1)->update([
              'remarks'=>$img['path']
           ]);

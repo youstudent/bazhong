@@ -79,7 +79,7 @@ class ClientUsers extends Model
         $data = $request->all();
         $file =  Input::file('headimgurl');
         $path = '/uploads';
-        $rule =['jpg','png','gif'];
+        $rule =['jpg','png','gif','jpeg'];
         if ($file){
             $img =  UploadsImg::upload_img($file,$path,$rule);
             $data['headimgurl'] = $img['path'];

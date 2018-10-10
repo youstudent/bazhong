@@ -68,7 +68,7 @@ class Banner extends Model
         $data['business_id']  = json_encode($data['business']);
         $file =  Input::file('img');
         $path = '/uploads';
-        $rule =['jpg','png','gif'];
+        $rule =['jpg','png','gif','jpeg'];
         if ($file){
             $img =  UploadsImg::upload_img($file,$path,$rule);
             $data['img'] = $img['path'];
