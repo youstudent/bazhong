@@ -25,6 +25,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1\Controller','mi
         $api->get("/deleteCollection", 'ClientUsersController@deleteCollection'); //删除商家
         $api->match(['get','post'],"/ptc", 'ClientUsersController@ptc'); //打卡和打卡记录
         $api->post('/uploadHeadimgurl','ClientUsersController@uploadHeadimgurl');
+        $api->post('/ptcData','ClientUsersController@ptcData');
+        $api->post('/uploadImg','ClientUsersController@uploadImg');
     });
     $api->group(['prefix'=>'application'],function ($api){
         $api->match(['get','post'],"/apply", 'ApplicationController@apply');//申请资料
@@ -47,6 +49,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1\Controller'], f
     $api->group(['prefix'=>'business'], function($api){
         $api->get("/index", 'BusinessController@index');
         $api->get("/getCategory",'BusinessController@getCategory');
+        $api->get("/getSonCategory",'BusinessController@getSonCategory');
         $api->get("/activityList",'BusinessController@activityList');
         $api->get('/hostSearch','BusinessController@hotSearch'); // 热门搜索
         $api->get('/getCategoryList','BusinessController@getCategoryList'); // 商家分类

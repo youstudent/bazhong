@@ -31,12 +31,16 @@ class BusinessController extends BaseController
      */
     public function index(){
         $category_id = Input::get('category_id');
+        $son_category_id = Input::get('son_category_id');
         $search = Input::get('name');
         $sortKey = Input::get('browsing_num')?'browsing_num':'id';
-        $data = Business::select(['id', 'name','category_id','shop_img','intro','sales_type','browsing_num','shop_id'])
-            ->where(function ($query) use ($category_id,$search) {
+        $data = Business::select(['id', 'name','category_id','shop_img','intro','sales_type','browsing_num','shop_id','son_category_id'])
+            ->where(function ($query) use ($category_id,$search,$son_category_id) {
                 if ($category_id) {
                     $query->where('category_id',  $category_id);
+                }
+                if ($son_category_id){
+                    $query->where('son_category_id',  $son_category_id);
                 }
                 if ($search){
                     $query->where('name', 'like', '%' . $search . '%');
@@ -60,11 +64,21 @@ class BusinessController extends BaseController
 
 
     /**
-     * 分类详情
+     * 分类主分类
      * @return string
      */
     public function getCategory(){
         $data = Category::all()->toArray();
+        $datas =  Common::map($data,'id','category_name');
+        return $this->jsonEncode(1,'分类ID',$datas);
+    }
+
+    /**
+     * 分类子分类
+     * @return string
+     */
+    public function getSonCategory(){
+        $data = Category::where('pid','!=',0)->get()->toArray();
         $datas =  Common::map($data,'id','category_name');
         return $this->jsonEncode(1,'分类ID',$datas);
     }

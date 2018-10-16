@@ -96,7 +96,7 @@ class BusinessController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function categoryList(){
-        $data  = Category::get()->toArray();
+        $data = Category::getCategories();
         return view('business.categoryList',['datas'=>$data]);
     }
 
@@ -118,6 +118,58 @@ class BusinessController extends Controller
             return view('business.categoryEdit',['data'=>$data]);
         }
 
+    }
+
+    /**
+     * 创建分类
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function categoryCreate(Request $request){
+          if ($request->isMethod('post')){
+              $data = $request->all();
+              Category::create([
+                 'pid'=>$data['category_id'],
+                 'category_name'=>$data['category_name'],
+              ]);
+              return redirect('/admin/business/categoryList');
+          }else {
+              $category = Category::get()->toArray();
+              return view('business.categoryCreate',['category'=>$category,'category_id'=>$request->get('id')]);
+          }
+    }
+
+    /**
+     * 修改分类
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function categorySonEdit(Request $request){
+        if ($request->isMethod('post')){
+            $data = $request->all();
+            Category::where(['id'=>$data['id']])->update([
+                'pid'=>$data['category_id'],
+                'category_name'=>$data['category_name'],
+            ]);
+            return redirect('/admin/business/categoryList');
+        }else {
+            $data = Category::find($request->get('id'));
+            $category = Category::where('pid',0)->get()->toArray();
+            return view('business.categorySonEdit',['category'=>$category,'data'=>$data]);
+        }
+    }
+
+    /**
+     * 删除二级分类
+     * @param $id
+     * @return array
+     */
+    public function categoryDelete($id){
+        if ($id){
+            Category::destroy($id);
+            return ['code'=>1,'message'=>'删除成功'];
+        }
+        return ['code'=>0,'message'=>'数据不存在!'];
     }
 
 
@@ -249,6 +301,5 @@ class BusinessController extends Controller
              BusinessName::where('id',$id)->update(['name'=>$request->get('value')]);
           }
           return ['code'=>1,'message'=>'更新成功'];
-
     }
 }

@@ -43,6 +43,13 @@ class ClientUsersController extends BaseController
             $data['is_distributor'] = $is_distributor?true:false;
             $is_distributor =  ApplyRecord::where('client_users_id',$data['users_id'])->whereIn('status',[1,2])->select(['id'])->first();
             $data['is_apply'] = $is_distributor?false:true;
+            $data['apply_status'] =0;
+            $data['remarks'] ='';
+            $apply_status = ApplyRecord::where('client_users_id',$data['users_id'])->orderBy('id','desc')->select(['status','remarks'])->first();
+            if ($apply_status){
+                $data['apply_status'] = $apply_status['status'];
+                $data['remarks'] = $apply_status['remarks'];
+            }
             return $this->jsonEncode(1,'成功',$data);
         }
 
@@ -140,7 +147,7 @@ class ClientUsersController extends BaseController
             if (!Common::distance_calculation($main_points,$data['main_points_x'],$data['main_points_y'])){
                 return $this->jsonEncode(0,'打卡失败,不在打卡范围');
             }
-            Ptc::create([
+            $re = Ptc::create([
                 'day'=>date('d'),
                 'client_users_id'=>$users['users_id'],
                 'date'=>date('Y-m'),
@@ -148,7 +155,7 @@ class ClientUsersController extends BaseController
                 'business_name'=>$data['name'],
                 'client_users_name'=>$users['name'],
             ]);
-            return $this->jsonEncode(1,'打卡成功');
+            return $this->jsonEncode(1,'打卡成功',['id'=>$re['id']]);
         }else {
             $time =  date('Y-m');
             $reqDate =  $request->get('date');
@@ -159,6 +166,43 @@ class ClientUsersController extends BaseController
             $new_data = Common::map($data,'day','day');
             return $this->jsonEncode(1,'成功',$new_data);
         }
+    }
+
+
+    /**
+     * 打卡后的资料上传
+     * @param Request $request
+     * @return string
+     */
+    public function ptcData(Request $request){
+        if ($request->get('id')){
+            Ptc::where('id',$request->get('id'))->update([
+               'position'=> $request->get('position'),
+               'img'=> $request->get('img'),
+            ]);
+            return $this->jsonEncode(1,'添加成功');
+        }
+        return $this->jsonEncode(0,'打卡记录ID错误');
+
+    }
+
+
+
+    /**
+     * 图片上传
+     * @return string
+     */
+    public function uploadImg(){
+        $file =  Input::file('img');
+        if ($file){
+            $business_license_img =  ClientUsers::uploadFile($file);
+            if ($business_license_img){
+                return $this->jsonEncode(1,'上传成功',$business_license_img);
+            }
+            return $this->jsonEncode(0,'上传失败');
+
+        }
+        return $this->jsonEncode(0,'请选择文件');
     }
 
 

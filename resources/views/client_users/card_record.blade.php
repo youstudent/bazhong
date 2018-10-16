@@ -46,7 +46,7 @@
                                          <button class="btn btn-default" type="submit"><i class="fa fa-search"></i>&nbsp;搜索</button>
 
                                         </span>
-                                        <a class="btn btn-default" href="{{'/admin//client_users/cardRecord'}}">重置</a>
+                                        <a class="btn btn-default" href="{{'/admin/client_users/cardRecord'}}">重置</a>
                                     </div>
                                 </div>
                             </div>

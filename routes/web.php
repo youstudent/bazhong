@@ -28,6 +28,9 @@ Route::group(['middleware'=>'auth:web','namespace'=>'Admin'], function(){
         Route::delete('/del','BusinessController@del');
         Route::get('/categoryList','BusinessController@categoryList');
         Route::match(['get','post'],'/categoryEdit','BusinessController@categoryEdit');
+        Route::match(['get','post'],'/categoryCreate','BusinessController@categoryCreate');
+        Route::match(['get','post'],'/categorySonEdit','BusinessController@categorySonEdit');
+        Route::get('/categoryDelete/{id}','BusinessController@categoryDelete');
         Route::get('/status/{id}/{status}','BusinessController@status');
         Route::get('/details/{id}','BusinessController@details');
         Route::match(['get','post'],'/option','BusinessController@option');

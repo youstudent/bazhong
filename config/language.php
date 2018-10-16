@@ -1,6 +1,6 @@
 <?php
 return [
-    'pages'=>10,
+    'pages'=>15,
     'api_pages'=>6,
     'start_time'=>'2018-09-01 00:00:00',
     'sales_type' =>[1=>'零售',2=>'批发'],
