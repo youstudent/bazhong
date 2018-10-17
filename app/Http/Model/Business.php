@@ -14,7 +14,7 @@ class Business extends Model
 
     //表单数据录入
     protected $fillable = [
-     'phone','name','email','intro','shop_position','password','sales_type','category_id','shop_img','shop_id','main_points_x','main_points_y','remarks','code_img'
+     'phone','name','email','intro','shop_position','password','sales_type','category_id','shop_img','shop_id','main_points_x','main_points_y','remarks','code_img','son_category_id'
     ];
 
 
@@ -30,7 +30,7 @@ class Business extends Model
         $keyword =  request('keyword')?request('keyword'):'';
         $select = request('select')?request('select'):'1';
         $category_id = request('category_id')?request('category_id'):'';
-        $data = self::select(['id', 'email', 'name', 'phone', 'created_at','category_id','shop_img','shop_id','browsing_num','status','code_img'])
+        $data = self::select(['id', 'email', 'name', 'phone', 'created_at','category_id','shop_img','shop_id','browsing_num','status','code_img','son_category_id'])
             ->where('created_at','>',$time[0])->where('created_at','<',$time[1])
             ->where(function ($query) use ($select,$keyword,$category_id) {
                 if ($select && $keyword) {
@@ -55,7 +55,7 @@ class Business extends Model
             'category_id' =>$category_id,
             'page' =>request('page')?request('page'):'1',
         ));
-        $Category= Category::select(['id','category_name'])->get()->toArray();
+        $Category = Common::map(Category::select(['id','category_name'])->get()->toArray(),'id','category_name');
         return ['datas'=>$appendData,'time'=>$this->time,'category'=>$Category];
     }
 
@@ -98,6 +98,7 @@ class Business extends Model
         }
         $data['password'] = Hash::make($data['password']);
         $data['shop_id'] = self::createCode();
+        $data['category_id'] =Category::getPent($data['son_category_id']);
         $res = self::create($data);
         if ($res){
             $res->update(['code_img'=>Common::qrCode($res->id)]);
@@ -151,6 +152,7 @@ class Business extends Model
         }else{
             $data['password'] = Hash::make($data['password']);
         }
+        $data['category_id'] =Category::getPent($data['son_category_id']);
         $res = self::where('id',$data['id'])->update($data);
         if ($res){
             $files = Input::file('files');
@@ -176,6 +178,15 @@ class Business extends Model
      */
     public function category(){
       return $this->hasOne(Category::class,'id','category_id')->select(['category_name']);
+    }
+
+
+    /**
+     * 分类表一对一
+     * @return $this
+     */
+    public function sonCategory(){
+        return $this->hasOne(Category::class,'id','son_category_id')->select(['category_name']);
     }
 
     /**

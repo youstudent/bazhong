@@ -7,6 +7,7 @@ use App\Http\Model\BusinessArea;
 use App\Http\Model\BusinessImg;
 use App\Http\Model\BusinessName;
 use App\Http\model\Category;
+use App\Http\Model\FamilyTree;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -40,8 +41,10 @@ class BusinessController extends Controller
             return redirect('admin/business/create');
 
         }else{
-            $category =Category::select(['id','category_name'])->get()->toArray();
-            return view('business.create',['category'=>$category]);
+            $category = FamilyTree::getCategoriesName();
+            //$category =Category::select(['id','category_name'])->get()->toArray();
+            $pent_data = Category::getPentId();
+            return view('business.create',['category'=>$category,'pent_data'=>$pent_data]);
         }
     }
 
@@ -59,7 +62,9 @@ class BusinessController extends Controller
             return redirect('admin/business/edit?id='.$request->get('id'));
         }else{
             $data = Business::find($request->get('id'));
-            $category =Category::select(['id','category_name'])->get()->toArray();
+            //$category =Category::select(['id','category_name'])->get()->toArray();
+            $category = FamilyTree::getCategoriesName();
+
             $img = BusinessImg::where('business_id',$data['id'])->select(['img','id'])->get()->toArray();
             return view('business.edit',['data'=>$data,'category'=>$category,'img'=>$img]);
         }
@@ -166,6 +171,9 @@ class BusinessController extends Controller
      */
     public function categoryDelete($id){
         if ($id){
+            if (Business::where('son_category_id',$id)->select(['id'])->first()){
+                return ['code'=>0,'message'=>'该子分类有商家不能删除'];
+            }
             Category::destroy($id);
             return ['code'=>1,'message'=>'删除成功'];
         }

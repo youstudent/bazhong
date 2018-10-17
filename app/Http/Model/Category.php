@@ -5,6 +5,7 @@ namespace App\Http\model;
 use App\UploadsImg;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Input;
+use App\Http\Model\FamilyTree;
 
 class Category extends Model
 {
@@ -41,7 +42,7 @@ class Category extends Model
     public static function getCategories()
     {
         $categories = self::_getCategories();
-        $familyTree = new FamilyTree($categories);
+        $familyTree = new \App\Http\Model\FamilyTree($categories);
         $array = $familyTree->getDescendants(0);
         return self::index($array, 'id');
     }
@@ -129,6 +130,26 @@ class Category extends Model
         // . and , are the only decimal separators known in ICU data,
         // so its safe to call str_replace here
         return str_replace(',', '.', (string) $number);
+    }
+
+
+    /**
+     * 获取一级分类
+     * @return array
+     */
+    public static function getPentId(){
+        $data = self::where('pid',0)->select(['id'])->get()->toArray();
+        $new_data = Common::map($data,'id','id');
+        return $new_data;
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public static function getPent($id){
+       $pid =  self::where('id',$id)->select(['pid'])->first()['pid'];
+       return $pid;
     }
 
 }

@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 //       \DB::listen( function ($query){
+//           echo '<pre>';
 //       echo 'sql:'. $query->sql.'执行时间'.$query->time;
 //       });
         Schema::defaultStringLength(191);

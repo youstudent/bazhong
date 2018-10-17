@@ -29,8 +29,8 @@
                                     <div class="form-group field-users-select">
                                         <select id="users-select" class="form-control" name="category_id">
                                             <option value="">选择分类</option>
-                                            @foreach($category as $value)
-                                                <option {{request('category_id')==$value['id']?'selected':''}} value="{{$value['id']}}">{{$value['category_name']}}</option>
+                                            @foreach($category as $key=>$value)
+                                                <option {{request('category_id')==$key?'selected':''}} value="{{$key}}">{{$value}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -86,7 +86,7 @@
                                     <td>{{$i}}</td>
                                     <td>{{$data['shop_id']}}</td>
                                     <td>{{$data['name']}}</td>
-                                    <td>{{$data['category']['category_name']}}</td>
+                                    <td>{{$data['category']['category_name']}}/ {{$category[$data['son_category_id']]}}</td>
                                     <td>{{$data['phone']}}</td>
                                     <td><a hrefs="/storage{{$data['shop_img']}}" class="qrcode"><img style="width: 100px;height: 40px" src="/storage{{$data['shop_img']}}"></a></td>
                                     <td><a hrefs="{{$data['code_img']}}" class="qrcode"><img style="width: 100px;height: 40px" src="{{$data['code_img']}}"></a></td>

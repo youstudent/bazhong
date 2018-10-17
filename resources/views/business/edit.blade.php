@@ -62,9 +62,9 @@
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">销售分类</label>
                             <div class="col-sm-3">
-                                <select class="form-control" name="category_id">
-                                    @foreach($category as $value)
-                                        <option {{$data['category_id']==$value['id']? 'selected':''}} value="{{$value['id']}}">{{$value['category_name']}}</option>
+                                <select class="form-control" name="son_category_id">
+                                    @foreach($category as $key=>$value)
+                                        <option {{in_array($key,$pent_data)?'disabled':''}} {{$data['son_category_id']==$key? 'selected':''}} value="{{$key}}">{{$value}}</option>
                                     @endforeach
                                 </select>
                             </div>
