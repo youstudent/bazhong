@@ -66,15 +66,15 @@
                             <?php $i++?>
                             @endforeach
                         </table>
-                        <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
-                        <div class="panel panel-info">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">App启动广告</h3>
-                            </div>
-                            <div class="panel-body">
-                                <input id="file-1" name="remarks" class="file" type="file" accept="image/png,image/gif,image/jpg">
-                            </div>
-                        </div>
+                        {{--<hr style="height:1px;border:none;border-top:1px dashed lavender;" />--}}
+                        {{--<div class="panel panel-info">--}}
+                            {{--<div class="panel-heading">--}}
+                                {{--<h3 class="panel-title">App启动广告</h3>--}}
+                            {{--</div>--}}
+                            {{--<div class="panel-body">--}}
+                                {{--<input id="file-1" name="remarks" class="file" type="file" accept="image/png,image/gif,image/jpg">--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                     </div>
                     <!-- /.box-body -->
                 </div>

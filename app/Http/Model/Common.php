@@ -9,6 +9,7 @@
 namespace App\Http\Model;
 
 use Illuminate\Http\Request;
+use Psy\Exception\RuntimeException;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Common
@@ -83,10 +84,9 @@ class Common
      * @param $main_points_x2
      * @param $main_points_y2
      */
-    public static function distance_calculation($main_points1,$main_points_x2,$main_points_y2) {
-        $main_points = explode(',',$main_points1);
-        $lng1 = $main_points[1];
-        $lat1 = $main_points[0];
+    public static function distance_calculation($main_points1,$main_points2,$main_points_x2,$main_points_y2) {
+        $lng1 = $main_points2;
+        $lat1 = $main_points1;
         $lng2 = $main_points_x2;
         $lat2 = $main_points_y2;
         // 将角度转为狐度
@@ -97,10 +97,68 @@ class Common
         $a = $radLat1 - $radLat2;
         $b = $radLng1 - $radLng2;
         $s = 2 * asin(sqrt(pow(sin($a / 2), 2) + cos($radLat1) * cos($radLat2) * pow(sin($b / 2), 2))) * 6378.137 * 1000;
+        file_put_contents(__DIR__.'pac.txt',json_encode(['main_points1'=>$main_points1,'main_points2'=>$main_points2,'main_points_x2'=>$main_points_x2,'main_points_y2'=>$main_points_y2,'mi'=>$s]).PHP_EOL,FILE_APPEND);
         if ($s>100){
             return false;
         }
         return true;
+    }
+
+    public static function img_upload($base64_img){
+        $base64_string= explode(',', $base64_img); //截取data:image/png;base64, 这个逗号后的字符
+        $data= base64_decode($base64_string[1]);
+        var_dump($data);exit;
+        $base64_img = trim($base64_img);
+
+        $up_dir = './upload/';//存放在当前目录的upload文件夹下
+
+        if(!file_exists($up_dir)){
+            mkdir($up_dir,0777);
+        }
+
+        if(preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_img, $result)){
+
+            $type = $result[2];
+
+            if(in_array($type,array('pjpeg','jpeg','jpg','gif','bmp','png'))){
+
+                $new_file = $up_dir.date('YmdHis').'.'.$type;
+                if(file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_img)))){
+
+                    $img_path = str_replace('../../..', '', $new_file);
+
+                    return array('code' => 1, 'msg' => "图片上传成功", 'url' => $img_path);
+
+                }
+
+                return array('code' => 2, 'msg' => "图片上传失败");
+
+            }
+
+            //文件类型错误
+
+            return array('code' => 4, 'msg' => "文件类型错误");
+
+        }
+
+        //文件错误
+
+        return array('code' => 3, 'msg' => "文件错误");
+
+    }
+
+    public static function base64_image_content($imgBase64){
+        $imgBase64 = str_replace(" ", "+", $imgBase64);
+        //保存base64字符串为图片
+        //匹配出图片的格式
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $imgBase64, $result)){
+            $type = $result[2];
+            $time = time();
+            $new_file = "storage/uploads/{$time}.{$type}";
+            if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $imgBase64)))) {
+               return '/'.$new_file;
+            }
+        }
     }
 
 }

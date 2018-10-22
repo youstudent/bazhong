@@ -7,7 +7,10 @@ use App\Http\Model\BusinessArea;
 use App\Http\Model\BusinessImg;
 use App\Http\Model\BusinessName;
 use App\Http\model\Category;
+use App\Http\Model\Coordinate;
 use App\Http\Model\FamilyTree;
+use App\Http\Model\GeoTransUtil;
+use App\Http\Model\HotSearch;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -21,6 +24,8 @@ class BusinessController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request){
+         $from = new Coordinate(30.546586,104.068007);
+         $ret = GeoTransUtil::gcjTObd($from);
          $model = new Business();
          $data = $model->getList($request->all());
         return view('business.index',$data);
@@ -64,9 +69,9 @@ class BusinessController extends Controller
             $data = Business::find($request->get('id'));
             //$category =Category::select(['id','category_name'])->get()->toArray();
             $category = FamilyTree::getCategoriesName();
-
+            $pent_data = Category::getPentId();
             $img = BusinessImg::where('business_id',$data['id'])->select(['img','id'])->get()->toArray();
-            return view('business.edit',['data'=>$data,'category'=>$category,'img'=>$img]);
+            return view('business.edit',['data'=>$data,'category'=>$category,'img'=>$img,'pent_data'=>$pent_data]);
         }
 
     }
@@ -246,7 +251,8 @@ class BusinessController extends Controller
     public function option(){
         $areas = BusinessArea::select(['id','area'])->get()->toArray();
         $names = BusinessName::select(['id','name'])->get()->toArray();
-        return view('business.option',['areas'=>$areas,'names'=>$names]);
+        $HotSearch = HotSearch::select(['id','name'])->get()->toArray();
+        return view('business.option',['areas'=>$areas,'names'=>$names,'HotSearch'=>$HotSearch]);
     }
 
     /**
@@ -276,6 +282,19 @@ class BusinessController extends Controller
         return ['code'=>0,'message'=>'数据不存在!'];
     }
 
+    /**
+     * 删除
+     * @param $id
+     * @return array
+     */
+    public function hotDelete($id){
+        if ($id){
+            HotSearch::destroy($id);
+            return ['code'=>1,'message'=>'删除成功'];
+        }
+        return ['code'=>0,'message'=>'数据不存在!'];
+    }
+
 
     /**
      * 添加区域
@@ -288,8 +307,12 @@ class BusinessController extends Controller
             BusinessArea::create([
                'area'=>$request->get('area')
             ]);
-        }else {
+        }else if ($type==2) {
             BusinessName::create([
+                'name'=>$request->get('name')
+            ]);
+        }else {
+            HotSearch::create([
                 'name'=>$request->get('name')
             ]);
         }
@@ -303,10 +326,13 @@ class BusinessController extends Controller
      * @return array
      */
     public function editOption(Request $request,$id){
-          if ($request->get('type')==1){
+          $type =$request->get('type');
+          if ($type==1){
              BusinessArea::where('id',$id)->update(['area'=>$request->get('value')]);
-          }else {
+          }else if ($type==2) {
              BusinessName::where('id',$id)->update(['name'=>$request->get('value')]);
+          }else{
+             HotSearch::where('id',$id)->update(['name'=>$request->get('value')]);
           }
           return ['code'=>1,'message'=>'更新成功'];
     }

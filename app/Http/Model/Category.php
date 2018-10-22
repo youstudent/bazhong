@@ -139,7 +139,7 @@ class Category extends Model
      */
     public static function getPentId(){
         $data = self::where('pid',0)->select(['id'])->get()->toArray();
-        $new_data = Common::map($data,'id','id');
+        $new_data = \App\Http\Model\Common::map($data,'id','id');
         return $new_data;
     }
 

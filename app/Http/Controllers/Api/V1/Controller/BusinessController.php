@@ -18,6 +18,7 @@ use App\Http\Model\BusinessImg;
 use App\Http\model\Category;
 use App\Http\Model\Common;
 use App\Http\Model\HotSearch;
+use function foo\func;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
@@ -33,8 +34,8 @@ class BusinessController extends BaseController
         $category_id = Input::get('category_id');
         $son_category_id = Input::get('son_category_id');
         $search = Input::get('name');
-        $sortKey = Input::get('browsing_num')?'browsing_num':'id';
-        $data = Business::select(['id', 'name','category_id','shop_img','intro','sales_type','browsing_num','shop_id','son_category_id'])
+        $sortKey = Input::get('browsing_num')?'browsing_num':'business.id';
+        $data = Business::select(['business.id', 'name','category_id','shop_img','intro','sales_type','browsing_num','shop_id','son_category_id'])->join('category', 'business.category_id', '=', 'category.id')->join('category as son_category', 'business.son_category_id', '=', 'son_category.id')
             ->where(function ($query) use ($category_id,$search,$son_category_id) {
                 if ($category_id) {
                     $query->where('category_id',  $category_id);
@@ -43,7 +44,9 @@ class BusinessController extends BaseController
                     $query->where('son_category_id',  $son_category_id);
                 }
                 if ($search){
-                    $query->where('name', 'like', '%' . $search . '%');
+                    $query->where('name', 'like', '%' . $search . '%')->
+                     orWhere('category.category_name', 'like', '%' . $search . '%')->
+                     orWhere('son_category.category_name', 'like', '%' . $search . '%');
                 }
             })
             ->orderBy($sortKey, 'desc')
@@ -52,12 +55,6 @@ class BusinessController extends BaseController
         $url = config('language.url');
         foreach ($data['data'] as &$value){
             $value['shop_img'] = $url.$value['shop_img'];
-//            $re =  BusinessImg::select(['img'])->where('business_id',$value['id'])->get()->toArray();
-//            $value['banner_img']= [];
-//            if ($re){
-//                $value['banner_img'] = $url. $re;
-//            }
-
         }
         return $this->jsonEncode(1,'ok',$data);
     }
@@ -77,8 +74,12 @@ class BusinessController extends BaseController
      * 分类子分类
      * @return string
      */
-    public function getSonCategory(){
+    public function getSonCategory(Request $request){
+        $category_id = $request->get('category_id');
         $data = Category::where('pid','!=',0)->get()->toArray();
+        if ($category_id){
+          $data = Category::where('pid',$category_id)->get()->toArray();
+        }
         $datas =  Common::map($data,'id','category_name');
         return $this->jsonEncode(1,'分类ID',$datas);
     }
@@ -92,7 +93,7 @@ class BusinessController extends BaseController
     public function activityList(Request $request){
         $shop_id = $request->get('shop_id');
         if ($shop_id){
-            $data = Activity::where('shop_id',$shop_id)->where('status',2)->select(['theme','img','id'])->get()->toArray();
+            $data = Activity::where('shop_id',$shop_id)->where('activity_end_date','>',date('Y-m-d H:i:s'))->where('status',2)->select(['theme','img','id'])->get()->toArray();
             $url = config('language.url');
             foreach ($data as &$value){
                 $value['img'] = $url.$value['img'];
@@ -138,7 +139,7 @@ class BusinessController extends BaseController
         $collection = ClientUsersCollection::where('client_users_id',$users['id'])->where('business_id',$id)->select(['business_id','client_users_id'])->get()->toArray();
         $data['is_collection'] = $collection?true:false;
         $data['main_points'] = $data['main_points_y'].','.$data['main_points_x'];
-        //$data['main_points'] = '30.5763307666,104.0712219292';
+        Business::where('id',$id)->increment('browsing_num');
         return $this->jsonEncode(1,'成功',$data);
 
     }
@@ -148,7 +149,7 @@ class BusinessController extends BaseController
      * @return string
      */
     public function getCategoryList(){
-       $data = Category::select(['category_name','id','icon'])->get()->toArray();
+       $data = Category::where('pid',0)->select(['category_name','id','icon'])->get()->toArray();
        $url = config('language.url');
        foreach ($data as &$value){
            $value['icon'] = $url.$value['icon'];

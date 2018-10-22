@@ -30,6 +30,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1\Controller','mi
     });
     $api->group(['prefix'=>'application'],function ($api){
         $api->match(['get','post'],"/apply", 'ApplicationController@apply');//申请资料
+        $api->match(['get'],"/getHistoricalData", 'ApplicationController@getHistoricalData');//申请资料
         $api->post("/applyBusinessImg",'ApplicationController@applyBusinessImg');//图片上传
     });
 

@@ -77,7 +77,7 @@
                                     <td>{{$data['name']}}</td>
                                     <td>{{$data['phone']}}</td>
                                     <td>{{$data['sex']==1?'男':'女'}}</td>
-                                    <td><a hrefs="/storage{{$data['headimgurl']}}" class="qrcode"><img style='width: 50px' src='/storage{{$data['headimgurl']}}' alt=''></a></td>
+                                    <td><a hrefs="/storage{{$data['headimgurl']}}" class="qrcode"><img style='width: 50px;height: 50px' src='/storage{{$data['headimgurl']}}' alt=''></a></td>
                                     <td>{{$data['birthday']}}</td>
                                     <td>{{$data['identity_type']?$data['identity_type']:'普通用户'}}</td>
                                     <td>{{$data['created_at']}}</td>

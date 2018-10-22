@@ -15,9 +15,13 @@ use App\Http\Model\ApplyRecord;
 use App\Http\Model\Business;
 use App\Http\Model\BusinessImg;
 use App\Http\Model\Common;
+use App\Http\Model\Coordinate;
+use App\Http\Model\GeoTransUtil;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Psy\Exception\RuntimeException;
+use Psy\Util\Json;
 
 
 class ClientUsersController extends BaseController
@@ -175,24 +179,48 @@ class ClientUsersController extends BaseController
      * @return string
      */
     public function ptcData(Request $request){
-        if ($request->get('id')){
-            Ptc::where('id',$request->get('id'))->update([
-               'position'=> $request->get('position'),
-               'img'=> $request->get('img'),
-            ]);
-            return $this->jsonEncode(1,'添加成功');
+        $ptcData = json_decode($_REQUEST['data'],true);
+        $str1 =str_replace("\"{'id':","",$ptcData['qrData']);
+        $id=str_replace("}\"","",$str1);
+        $users = ClientUsers::getUsers(['users_id','name']);
+        $data =Business::where('id',$id)->select(['id','name','main_points_x','main_points_y'])->first();
+        if (!$data){
+            return $this->jsonEncode(0,'商家不存在');
         }
-        return $this->jsonEncode(0,'打卡记录ID错误');
+        $re = Ptc::where('client_users_id',$users['users_id'])->where('date',date('Y-m'))->where('day',date('d'))->select(['id'])->first();
+        if ($re){
+            //TODO 每天仅限一次打卡,测试暂时屏蔽
+            //return $this->jsonEncode(0,'今日已经打卡');
+        }
+        $from = new Coordinate($ptcData['latitude'],$ptcData['longitude']);
+        $ret = GeoTransUtil::gcjTObd($from);
+        //TODO 根据 用户的经纬度和商家经纬度进行对比,在误差范围内打卡
+        if (!Common::distance_calculation($ret->x,$ret->y,$data['main_points_x'],$data['main_points_y'])){
+            return $this->jsonEncode(0,'打卡失败,不在打卡范围');
+        }
+        $rePtc = Ptc::create([
+            'day'=>date('d'),
+            'client_users_id'=>$users['users_id'],
+            'date'=>date('Y-m'),
+            'shop_id'=>$data['id'],
+            'business_name'=>$data['name'],
+            'position'=>$ptcData['address'],
+            'img'=>Common::base64_image_content($ptcData['imgBase64']),
+        ]);
+        if ($rePtc){
+            return $this->jsonEncode(1,'打卡成功',['id'=>$re['id']]);
+        }
+        return $this->jsonEncode(0,'处理失败');
 
     }
 
 
 
-    /**
+    /**business_name
      * 图片上传
      * @return string
      */
-    public function uploadImg(){
+    public function uploadImg(Request $request){
         $file =  Input::file('img');
         if ($file){
             $business_license_img =  ClientUsers::uploadFile($file);

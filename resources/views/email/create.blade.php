@@ -38,7 +38,7 @@
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">发送销售分类</label>
                             <div class="col-sm-3">
-                                <select class="form-control" name="category_id">
+                                <select class="form-control" name="category_id" id="select">
                                     <option value="0">群发消息</option>
                                     @foreach($category as $value)
                                         <option value="{{$value['id']}}">{{$value['category_name']}}</option>
@@ -47,11 +47,8 @@
                             </div>
                             <label for="lastnames" class="col-sm-1 control-label">发送商家</label>
                             <div class="col-sm-3">
-                                <select class="form-control" name="business_id">
+                                <select class="form-control" name="business_id" id="business_id">
                                     <option value="0">群发消息</option>
-                                    @foreach($business as $value)
-                                        <option value="{{$value['id']}}">{{$value['name']}}</option>
-                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -79,4 +76,32 @@
     </section>
 @endsection
 @section('script')
+    <script>
+        var select = document.getElementById('select');
+        select.onchange = function(){
+            var obj=document.getElementById('business_id');
+            obj.options.length=0;
+            $('#business_id').append('<option value="0">群发消息</option>');
+            $.ajax({
+                    url:'/admin/email/sonCategory',
+                    type:'get',
+                    data:{'id':$(this).val()},
+                    success:function (res) {
+                        if(res.code == 1)
+                        {
+                            res.data.forEach(function (value,index) {
+                                var a = '<option value='+value.id+'>'+value.name+'</option>';
+                                $('#business_id').append(a);
+                            })
+                        }else{
+                            reload(res.message,5)
+                        }
+                    }
+                });
+
+        }
+
+
+    </script>
+
 @endsection

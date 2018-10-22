@@ -138,7 +138,7 @@
             var url = $(this).attr("hrefs");
             layer.prompt({
                 formType: 2,
-                title: '请输入拒绝的理由',
+                title: '请输入停封的理由',
                 offset: ['40%', '40%']
             }, function(value, index, elem){
                 layer.load(0, {shade: false}); //0代表加载的风格，支持0-2

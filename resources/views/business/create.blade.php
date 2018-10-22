@@ -122,10 +122,9 @@
        if (a){
            layer.msg(a+'!!', {icon: 5})
        }
-       var url1 = 'http://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/FullMoon2010.jpg/631px-FullMoon2010.jpg';
        $("#file-2").fileinput({
            uploadUrl: '#', // you must set a valid URL here else you will get an error
-           allowedFileExtensions : ['jpg', 'png','gif'],
+           allowedFileExtensions : ['jpg', 'png','gif','jpeg'],
            language: 'zh',
            showPreview: true,
            overwriteInitial: false,
@@ -133,9 +132,6 @@
            initialPreviewAsData: true,
            maxFilesNum: 10,
            showUpload:false,
-           initialPreviewConfig: [
-               {caption: "Moon.jpg", downloadUrl: url1, size: 930321, width: "120px", key: 1}
-           ],
                slugCallback: function(filename) {
                return filename.replace('(', '_').replace(']', '_');
            }

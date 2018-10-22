@@ -32,7 +32,7 @@ class Ptc extends Model
         $time = $this->initTime($search);
         $keyword =  request('keyword')?request('keyword'):'';
         $select = request('select')?request('select'):'1';
-        $data = self::select(['id', 'client_users_name', 'shop_id', 'created_at','client_users_id','img','business_name'])
+        $data = self::select(['id','shop_id', 'created_at','client_users_id','img','business_name','position'])
             ->where('created_at','>',$time[0])->where('created_at','<',$time[1])
             ->where(function ($query) use ($select,$keyword) {
                 if ($select && $keyword) {
@@ -72,6 +72,11 @@ class Ptc extends Model
         $times = config('language.start_time').' - '.date('Y-m-d H:i:s',strtotime('+1 day'));
         $this->time = $times;
         return explode(' - ',$times);
+    }
+
+
+    public function user(){
+        return $this->hasOne(ClientUsers::class,'users_id','client_users_id')->select(['name']);
     }
 
 

@@ -57,16 +57,23 @@ class BannerController extends BaseController
      * @return string
      */
     public function signUp(Request $request){
-        $banner_id = $request->get('id');
-        if ($banner_id){
-            $banner = Banner::where('id',$banner_id)->select(['theme','id'])->first()->toArray();
+        $data =  $request->all();
+        if (!$data['phone'] || !$data['sex'] || !$data['name']){
+            return $this->jsonEncode(0,'请填写完整资料');
+        }
+        $search = '/^0?1[3|4|5|6|7|8][0-9]\d{8}$/';
+        if (!preg_match( $search, $data['phone']) ) {
+            return $this->jsonEncode(0,'手机号不正确');
+        }
+        if ($data['id']){
+            $banner = Banner::where('id',$data['id'])->select(['theme','id'])->first()->toArray();
             if ($banner){
                 BannerSign_up::create([
                    'banner_id'=>$banner['id'],
-                   'name'=>$request->get('name'),
+                   'name'=>$data['name'],
                    'banner_theme'=>$banner['theme'],
-                   'phone'=>$request->get('phone'),
-                   'sex'=>$request->get('sex'),
+                   'phone'=>$data['phone'],
+                   'sex'=>$data['sex'],
                 ]);
                 return $this->jsonEncode(1,'报名成功');
             }

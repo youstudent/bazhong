@@ -17,7 +17,7 @@ class Ptc extends Model
 
 
     protected $fillable = [
-      'client_users_id','date','day','shop_id','business_name','client_users_name'
+      'client_users_id','date','day','shop_id','business_name','position','img'
     ];
 
 }

@@ -23,6 +23,7 @@ Route::group(['middleware'=>'auth:web','namespace'=>'Admin'], function(){
         Route::get('/delete/{id}','BusinessController@delete');
         Route::get('/areaDelete/{id}','BusinessController@areaDelete');
         Route::get('/nameDelete/{id}','BusinessController@nameDelete');
+        Route::get('/hotDelete/{id}','BusinessController@hotDelete');
         Route::match(['get','post'],'/create','BusinessController@create');
         Route::match(['get','post'],'/edit','BusinessController@edit');
         Route::delete('/del','BusinessController@del');
@@ -54,6 +55,7 @@ Route::group(['middleware'=>'auth:web','namespace'=>'Admin'], function(){
 //邮件管理
     Route::group(['prefix'=>'email'],function (){
         Route::get('/index','EmailController@index');
+        Route::get('/sonCategory','EmailController@sonCategory');
         Route::match(['get','post'],'/create','EmailController@create');
 
     });

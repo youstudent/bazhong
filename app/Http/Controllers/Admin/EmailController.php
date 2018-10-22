@@ -42,10 +42,17 @@ class EmailController extends Controller
             }
             return redirect('/admin/email/create');
         }else{
-            $business = Business::select(['id','name'])->get()->toArray();
-            $category =Category::select(['id','category_name'])->get()->toArray();
-            return view('email.create',['category'=>$category,'business'=>$business]);
+            $category =Category::select(['id','category_name'])->where('pid',0)->get()->toArray();
+            return view('email.create',['category'=>$category]);
         }
+    }
+
+
+    public function sonCategory(Request $request){
+        $id =$request->get('id');
+        $business = Business::select(['id','name'])->where('category_id',$id)->get()->toArray();
+        return ['code'=>1,'message'=>'成功','data'=>$business];
+
     }
 
 }
