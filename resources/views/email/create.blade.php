@@ -36,24 +36,6 @@
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
                         <div class="form-group">
-                            <label for="lastname" class="col-sm-2 control-label">发送销售分类</label>
-                            <div class="col-sm-3">
-                                <select class="form-control" name="category_id" id="select">
-                                    <option value="0">群发消息</option>
-                                    @foreach($category as $value)
-                                        <option value="{{$value['id']}}">{{$value['category_name']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <label for="lastnames" class="col-sm-1 control-label">发送商家</label>
-                            <div class="col-sm-3">
-                                <select class="form-control" name="business_id" id="business_id">
-                                    <option value="0">群发消息</option>
-                                </select>
-                            </div>
-                        </div>
-                        <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
-                        <div class="form-group">
                             <label for="content" class="col-sm-2 control-label">内容<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-7">
                                 <textarea class="form-control" rows="3" id="content" name="content" required></textarea>

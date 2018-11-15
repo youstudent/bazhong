@@ -13,6 +13,7 @@ use App\Http\Model\GeoTransUtil;
 use App\Http\Model\HotSearch;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Input;
 
 class BusinessController extends Controller
@@ -24,8 +25,6 @@ class BusinessController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request){
-         $from = new Coordinate(30.546586,104.068007);
-         $ret = GeoTransUtil::gcjTObd($from);
          $model = new Business();
          $data = $model->getList($request->all());
         return view('business.index',$data);
@@ -267,6 +266,40 @@ class BusinessController extends Controller
         }
         return ['code'=>0,'message'=>'数据不存在!'];
     }
+
+    /**
+     *   Cache::store('file')->put('foo','1',100);
+         Cache::store('file')->put('foo','2',100);
+         Cache::store('file')->clear();
+         var_dump(Cache::store('file')->get('foo'));exit;
+     * @param Request $request
+     */
+    public function saveRecord(Request $request){
+        $yes = $request->get('yes');
+        $no = $request->get('no');
+        if ($yes){
+            if (!Cache::store('file')->has('foo')){
+                 Cache::store('file')->put('foo', $yes, 10);
+            }else{
+                $arr = array_merge($yes,Cache::store('file')->get('foo'));
+                Cache::store('file')->put('foo', $arr, 10);
+            }
+        }
+        if ($no){
+           $arr =  Cache::store('file')->get('foo');
+           if ($arr) {
+               foreach ($no as $value){
+                 $re = array_search($value,$arr);
+                 if ($re!==null){
+                     unset($arr[$re]);
+                 }
+               }
+               Cache::store('file')->put('foo', $arr, 10);
+           }
+        }
+
+    }
+
 
 
     /**

@@ -10,6 +10,7 @@ namespace App\Http\Model;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Email extends Model
 {
@@ -96,11 +97,20 @@ class Email extends Model
      */
     public function add($request){
         $data =$request->all();
-        $res = self::create($data);
-        if ($res){
+        $shops = Cache::store('file')->get('foo');
+        if ($shops){
+            $re = self::create($data);
+            foreach ($shops as $v){
+               BusinessEmail::create([
+                   'email_id'=>$re->id,
+                   'shop_id'=>$v,
+               ]);
+            }
+            Cache::store('file')->clear();
             return true;
         }
         return false;
+
     }
 
 }

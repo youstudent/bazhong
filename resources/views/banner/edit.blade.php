@@ -79,6 +79,14 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <label for="lastnames" class="col-sm-1 control-label">广告分类</label>
+                            <div class="col-sm-3">
+                                <select class="form-control" name="category_id">
+                                    @foreach($category as $value)
+                                        <option {{$value['id']==$data['category_id']?'selected':''}} value="{{$value['id']}}">{{$value['category_name']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
                         <div class="form-group">

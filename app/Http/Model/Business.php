@@ -4,6 +4,7 @@ namespace App\Http\Model;
 
 use App\UploadsImg;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 
@@ -14,7 +15,10 @@ class Business extends Model
 
     //表单数据录入
     protected $fillable = [
-     'phone','name','email','intro','shop_position','password','sales_type','category_id','shop_img','shop_id','main_points_x','main_points_y','remarks','code_img','son_category_id'
+     'phone','name','email','effective_date','intro','shop_position',
+        'password','sales_type','category_id','shop_img','shop_id',
+        'main_points_x','main_points_y','remarks','code_img','son_category_id',
+        'Keyword_one','Keyword_two','Keyword_three','Keyword_four'
     ];
 
 
@@ -30,8 +34,9 @@ class Business extends Model
         $keyword =  request('keyword')?request('keyword'):'';
         $select = request('select')?request('select'):'1';
         $category_id = request('category_id')?request('category_id'):'';
-        $data = self::select(['id', 'email', 'name', 'phone', 'created_at','category_id','shop_img','shop_id','browsing_num','status','code_img','son_category_id'])
+        $data = self::select(['id', 'email', 'name', 'phone', 'created_at','category_id','shop_img','shop_id','browsing_num','status','code_img','son_category_id','effective_date'])
             ->where('created_at','>',$time[0])->where('created_at','<',$time[1])
+            ->where('effective_date','>',date('Y-m-d'))
             ->where(function ($query) use ($select,$keyword,$category_id) {
                 if ($select && $keyword) {
                     if (request('select')!=='1'){
@@ -56,7 +61,11 @@ class Business extends Model
             'page' =>request('page')?request('page'):'1',
         ));
         $Category = Common::map(Category::select(['id','category_name'])->get()->toArray(),'id','category_name');
-        return ['datas'=>$appendData,'time'=>$this->time,'category'=>$Category];
+        $cache =  Cache::store('file')->get('foo');
+        if (!$cache){
+            $cache = [];
+        }
+        return ['datas'=>$appendData,'time'=>$this->time,'category'=>$Category,'cache'=>$cache];
     }
 
     /**
@@ -96,7 +105,8 @@ class Business extends Model
             }
             $data['shop_img'] = $img['path'];
         }
-        $data['password'] = Hash::make($data['password']);
+
+        $data['password'] = Hash::make(substr($data['phone'],-6));
         $data['shop_id'] = self::createCode();
         $data['category_id'] =Category::getPent($data['son_category_id']);
         $res = self::create($data);
@@ -135,22 +145,12 @@ class Business extends Model
             $img =  UploadsImg::upload_img(Input::file('shop_img'),$path,$rule);
             $data['shop_img'] = $img['path'];
         }
-        if ($data['password']){
-            $data['password'] = Hash::make($data['password']);
-        }else{
-            $data['password'];
-        }
         unset($data['_token']);
         unset($data['files']);
         if (empty($data['shop_position'])){
             unset($data['main_points_x']);
             unset($data['main_points_y']);
             unset($data['shop_position']);
-        }
-        if (empty($data['password'])){
-            unset($data['password']);
-        }else{
-            $data['password'] = Hash::make($data['password']);
         }
         $data['category_id'] =Category::getPent($data['son_category_id']);
         $res = self::where('id',$data['id'])->update($data);
@@ -200,6 +200,22 @@ class Business extends Model
         if($data)
             return $shop_id = self::createCode();
         return $shop_id;
+    }
+
+    /**
+     * 更新数据
+     */
+    public function updates(){
+        // 被拒绝或者被停封,或者过期
+        $activityIngCountb = Activity::whereIn('status',[3,4])->orwhere('activity_end_date','<',date('Y-m-d H:i:s'))->select(['shop_id'])->get()->toArray();
+        if ($activityIngCountb){
+            self::whereIn('id',Common::map($activityIngCountb,'shop_id','shop_id'))->update(['sort_b'=>null]);
+        }
+        $activityIngCount = Activity::where('status',2)->where('activity_end_date','>',date('Y-m-d H:i:s'))->select(['shop_id'])->get()->toArray();
+        if ($activityIngCount){
+            self::whereIn('id',Common::map($activityIngCount,'shop_id','shop_id'))->update(['sort_b'=>1]);
+        }
+
     }
 
 }

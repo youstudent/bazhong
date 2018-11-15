@@ -31,13 +31,19 @@
                         <input  type="hidden" name="main_points_x" id="main_points_x">
                         <input type="hidden" name="main_points_y" id="main_points_y">
                         <div class="form-group">
-                            <label for="suggestId" class="col-sm-2 control-label">店铺地址</label>
+                            <label for="suggestId" class="col-sm-2 control-label">店铺地址详细</label>
                             <div class="col-sm-7" id="r-result">
-                                <input type="text" name="shop_position" id="suggestId" class="form-control"  placeholder="请输入店铺地址" required>
-                                <div id="l-map" style="height: 500px;margin-top: 5px"></div>
-                                <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+                                <input type="text" name="shop_position" class="form-control"  placeholder="请输入店铺地址" required>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">经纬度</label>
+                            <div class="col-sm-7">
+                                <input type="text" id="position" class="form-control"  placeholder="点击地图获取获取" required readonly="readonly">
+                                <div id="allmap" style="height: 500px;margin-top: 5px"></div>
+                            </div>
+                        </div>
+
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
                         <div class="form-group">
                             <label for="email" class="col-sm-2 control-label">邮箱</label>
@@ -47,6 +53,25 @@
                             <label for="phone" class="col-sm-1 control-label">电话<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" name="phone" class="form-control" id="phone" pattern="(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$" placeholder="请输入电话" required >
+                            </div>
+                        </div>
+                        <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">关键字A</label>
+                            <div class="col-sm-1">
+                                <input type="text" required name="Keyword_one" class="form-control" >
+                            </div>
+                            <label class="col-sm-1 control-label">关键字B</label>
+                            <div class="col-sm-1">
+                                <input type="text" required name="Keyword_two" class="form-control" >
+                            </div>
+                            <label class="col-sm-1 control-label">关键字C</label>
+                            <div class="col-sm-1">
+                                <input type="text" required name="Keyword_three" class="form-control" >
+                            </div>
+                            <label  class="col-sm-1 control-label">关键字D</label>
+                            <div class="col-sm-1">
+                                <input type="text" required name="Keyword_four" class="form-control" >
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
@@ -74,9 +99,9 @@
                             <div class="col-sm-3">
                                 <input type="text" name="name" class="form-control" id="name" placeholder="请输入店铺名" required>
                             </div>
-                            <label for="password" class="col-sm-1 control-label">密码<span style="color: red">&nbsp;*</span></label>
+                            <label for="name" class="col-sm-1 control-label">商家有效截止期<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-3">
-                                <input type="password" name="password"  id="passwords" required class="form-control text-danger" placeholder="请输输入密码">
+                                <input type="text" name="effective_date" class="form-control" id="effective_date" placeholder="请店家选择日期" required>
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
@@ -113,7 +138,7 @@
     </section>
 @endsection
 @section('script')
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6o2Gs6C905ObYPVcdzbiXFOAh3xwKfLB"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=6o2Gs6C905ObYPVcdzbiXFOAh3xwKfLB"></script>
     <link href="/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
     <script src="/js/fileinput.js" type="text/javascript"></script>
     <script src="/js/fileinput_locale_de.js" type="text/javascript"></script>
@@ -137,61 +162,76 @@
            }
        });
     </script>
+    {{--<script type="text/javascript">--}}
+        {{--// 百度地图API功能--}}
+        {{--function G(id) {--}}
+            {{--return document.getElementById(id);--}}
+        {{--}--}}
+
+        {{--var map = new BMap.Map("l-map");--}}
+        {{--map.centerAndZoom("巴中市",12);                   // 初始化地图,设置城市和地图级别。--}}
+
+        {{--var ac = new BMap.Autocomplete(    //建立一个自动完成的对象--}}
+            {{--{"input" : "suggestId"--}}
+                {{--,"location" : map--}}
+            {{--});--}}
+
+        {{--ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件--}}
+            {{--var str = "";--}}
+            {{--var _value = e.fromitem.value;--}}
+            {{--var value = "";--}}
+            {{--if (e.fromitem.index > -1) {--}}
+                {{--value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;--}}
+            {{--}--}}
+            {{--str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;--}}
+
+            {{--value = "";--}}
+            {{--if (e.toitem.index > -1) {--}}
+                {{--_value = e.toitem.value;--}}
+                {{--value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;--}}
+            {{--}--}}
+            {{--str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;--}}
+            {{--G("searchResultPanel").innerHTML = str;--}}
+        {{--});--}}
+
+        {{--var myValue;--}}
+        {{--ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件--}}
+            {{--var _value = e.item.value;--}}
+            {{--myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;--}}
+            {{--G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;--}}
+
+            {{--setPlace();--}}
+        {{--});--}}
+
+        {{--function setPlace(){--}}
+            {{--map.clearOverlays();    //清除地图上所有覆盖物--}}
+            {{--function myFun(){--}}
+                {{--var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果--}}
+                {{--map.centerAndZoom(pp, 18);--}}
+                {{--map.addOverlay(new BMap.Marker(pp));    //添加标注--}}
+                {{--$("#main_points_x").val(pp.lng);--}}
+                {{--$("#main_points_y").val(pp.lat);--}}
+            {{--}--}}
+            {{--var local = new BMap.LocalSearch(map, { //智能搜索--}}
+                {{--onSearchComplete: myFun--}}
+            {{--});--}}
+            {{--local.search(myValue);--}}
+        {{--}--}}
+    {{--</script>--}}
     <script type="text/javascript">
         // 百度地图API功能
-        function G(id) {
-            return document.getElementById(id);
-        }
-
-        var map = new BMap.Map("l-map");
-        map.centerAndZoom("巴中市",12);                   // 初始化地图,设置城市和地图级别。
-
-        var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
-            {"input" : "suggestId"
-                ,"location" : map
-            });
-
-        ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
-            var str = "";
-            var _value = e.fromitem.value;
-            var value = "";
-            if (e.fromitem.index > -1) {
-                value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-            }
-            str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
-
-            value = "";
-            if (e.toitem.index > -1) {
-                _value = e.toitem.value;
-                value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-            }
-            str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
-            G("searchResultPanel").innerHTML = str;
+        var map = new BMap.Map("allmap");
+        map.centerAndZoom("巴中西部国际商贸城",100);
+        //单击获取点击的经纬度
+        map.addEventListener("click",function(e){
+            $("#main_points_x").val(e.point.lng);
+            $("#main_points_y").val(e.point.lat);
+            $("#position").val(e.point.lng + "," + e.point.lat);
         });
-
-        var myValue;
-        ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
-            var _value = e.item.value;
-            myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-            G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
-
-            setPlace();
+        //日期时间范围
+        laydate.render({
+            elem: '#effective_date'
         });
-
-        function setPlace(){
-            map.clearOverlays();    //清除地图上所有覆盖物
-            function myFun(){
-                var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
-                map.centerAndZoom(pp, 18);
-                map.addOverlay(new BMap.Marker(pp));    //添加标注
-                $("#main_points_x").val(pp.lng);
-                $("#main_points_y").val(pp.lat);
-            }
-            var local = new BMap.LocalSearch(map, { //智能搜索
-                onSearchComplete: myFun
-            });
-            local.search(myValue);
-        }
     </script>
 
 

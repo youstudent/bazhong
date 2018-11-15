@@ -10,8 +10,6 @@ namespace App\Http\Controllers\Agency\Controller;
 
 use App\Http\Controllers\Agency\Model\Business;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-
 class IndexController extends AgencyController
 {
     /**

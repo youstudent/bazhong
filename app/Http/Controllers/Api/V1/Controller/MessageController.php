@@ -28,7 +28,7 @@ class MessageController extends BaseController
         if ($re['code']){
             return $this->jsonEncode(1,'发送成功',['code'=>$re]);
         }else{
-            return $this->jsonEncode(0,$re['message']);
+            return $this->jsonEncode(0,'验证码发送频繁,请稍后再试!');
         }
 
     }

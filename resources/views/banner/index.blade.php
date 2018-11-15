@@ -31,6 +31,7 @@
                                 <th>宣传主题</th>
                                 <th>图片(点击放大)</th>
                                 <th>参与商家</th>
+                                <th>广告分类</th>
                                 <th>是否报名</th>
                                 <th>显示时间</th>
                                 <th>更新时间</th>
@@ -46,6 +47,7 @@
                                     <td>{{$data['theme']}}</td>
                                     <td><a hrefs="/storage{{$data['img']}}" class="qrcode"><img style="width: 100px;height: 40px" src="/storage{{$data['img']}}"></a></td>
                                     <td><a hrefs="{{$data['business_id']}}" class="business">查看</a></td>
+                                    <td>{{$category[$data['category_id']]}}</td>
                                     <td>{{$data['is_sign_up']==1?'是':'否'}}</td>
                                     <td>{{$data['show_start_time'].' - '.$data['show_end_time']}}</td>
                                     <td>{{$data['updated_at']}}</td>

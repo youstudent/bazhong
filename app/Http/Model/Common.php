@@ -73,7 +73,7 @@ class Common
      */
     public static function qrCode($id){
         $fileNamePath ='/qrcodes/'. date('Y-m-d').rand(10000,99999).'.png';
-        QrCode::format('png')->size(200)->margin(1)->merge('/public/qrcodes/1.png',.15)->generate("{'id':$id}",public_path($fileNamePath));
+        QrCode::format('png')->size(200)->margin(1)->generate("{'id':$id}",public_path($fileNamePath));
         return $fileNamePath;
     }
 

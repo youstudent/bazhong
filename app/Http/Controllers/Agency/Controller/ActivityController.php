@@ -40,7 +40,9 @@ class ActivityController extends AgencyController
             }
             return redirect('/agency/activity/create');
         }else{
-            return view('agency.activity.create');
+            $start = date('Y-m-d');
+            $end =date('Y-m-d',strtotime("+2 month"));
+            return view('agency.activity.create',['start'=>$start,'end'=>$end]);
         }
     }
 
@@ -110,7 +112,9 @@ class ActivityController extends AgencyController
             return redirect('agency/activity/edit?id='.$request->get('id'));
         }else{
             $data = Activity::find($request->get('id'));
-            return view('agency.activity.edit',['data'=>$data]);
+            $start = date('Y-m-d');
+            $end =date('Y-m-d',strtotime("+2 month"));
+            return view('agency.activity.edit',['data'=>$data,'start'=>$start,'end'=>$end]);
         }
 
     }

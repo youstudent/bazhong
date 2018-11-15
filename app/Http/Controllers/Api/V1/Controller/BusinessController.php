@@ -31,12 +31,20 @@ class BusinessController extends BaseController
      * @return string
      */
     public function index(){
+        $model =new Business();
+        $model->updates();
         $category_id = Input::get('category_id');
         $son_category_id = Input::get('son_category_id');
         $search = Input::get('name');
-        $sortKey = Input::get('browsing_num')?'browsing_num':'business.id';
-        $data = Business::select(['business.id', 'name','category_id','shop_img','intro','sales_type','browsing_num','shop_id','son_category_id'])->join('category', 'business.category_id', '=', 'category.id')->join('category as son_category', 'business.son_category_id', '=', 'son_category.id')
-            ->where(function ($query) use ($category_id,$search,$son_category_id) {
+        $sortKey = Input::get('browsing_num');
+        $a = 'browsing_num';
+        $b = 'browsing_num';
+        if ($sortKey!=='true'){
+            $a  = 'sort_a';
+            $b  = 'sort_b';
+        }
+        $data = Business::select(['business.id', 'name','category_id','shop_img','sort_a','sort_b','intro','sales_type','browsing_num','shop_id','son_category_id'])->join('category', 'business.category_id', '=', 'category.id')->join('category as son_category', 'business.son_category_id', '=', 'son_category.id')
+            ->where(function ($query) use ($category_id,$search,$son_category_id,$sortKey) {
                 if ($category_id) {
                     $query->where('category_id',  $category_id);
                 }
@@ -49,7 +57,7 @@ class BusinessController extends BaseController
                      orWhere('son_category.category_name', 'like', '%' . $search . '%');
                 }
             })
-            ->orderBy($sortKey, 'desc')
+            ->orderBy($a,'desc')->orderBy($b,'desc')
             ->paginate(config('language.api_pages'))->toArray();
         //获取商家详细页面的banner图片
         $url = config('language.url');

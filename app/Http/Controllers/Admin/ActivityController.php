@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Model\Activity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
 
 class ActivityController extends Controller
 {

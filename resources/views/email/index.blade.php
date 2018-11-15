@@ -26,28 +26,16 @@
                                     <input type="text" id="time" name="time" class="form-control" style="width: 268px" value="{{$time}}"  readonly="readonly">
                                 </div>
                                 <div class="form-group">
-                                    <div class="form-group field-users-select">
-                                        <select id="users-select" class="form-control" name="category_id">
-                                            <option value="">选择分类</option>
-                                            @foreach($category as $value)
-                                                <option {{request('category_id')==$value['id']?'selected':''}} value="{{$value['id']}}">{{$value['category_name']}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="input-group">
                                         <div class="form-group field-users-keyword">
                                             <input type="text" id="test1" class="form-control" name="keyword" value="{{request('keyword')}}" placeholder="请输入查询的标题">
                                         </div>
                                         <span class="input-group-btn">
                                          <button class="btn btn-default" type="submit"><i class="fa fa-search"></i>&nbsp;搜索</button>
-
                                         </span>
                                         <a class="btn btn-default" href="{{'/admin/email/index'}}">重置</a>
                                     </div>
                                 </div>
-                                <a href="{{url('/admin/email/create')}}" class="btn btn-default pull-right"> <i class="fa fa-plus"></i> &nbsp;添加</a>
                             </div>
                         </form>
 
@@ -59,8 +47,6 @@
                             <tr>
                                 <th>序号</th>
                                 <th>标题</th>
-                                <th>商家名</th>
-                                <th>分类</th>
                                 <th>内容</th>
                                 <th>创建时间</th>
                             </tr>
@@ -69,8 +55,6 @@
                                 <tr>
                                     <td>{{$i}}</td>
                                     <td>{{$data['title']}}</td>
-                                    <td>{{$data['business']['name']?$data['business']['name']:'群发'}}</td>
-                                    <td>{{$data['category']['category_name']?$data['category']['category_name']:'群发'}}</td>
                                     <td>{{mb_substr(strip_tags($data['content']),0,20)}} ...</td>
                                     <td>{{$data['created_at']}}</td>
                                 </tr>

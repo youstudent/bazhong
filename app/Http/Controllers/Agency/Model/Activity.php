@@ -123,10 +123,11 @@ class Activity extends Model
      */
     public function getHistoryList($search){
         //初始化时间
+        $users = request()->user();
         $time = $this->initTime($search);
         $keyword =  request('keyword')?request('keyword'):'';
         $select = request('select')?request('select'):'1';
-        $data = self::select(['id','created_at','theme','shop_id','activity_time','status'])
+        $data = self::select(['id','created_at','theme','shop_id','activity_time','status'])->where('shop_id',$users['id'])
             ->where('created_at','>',$time[0])->where('created_at','<',$time[1])
             ->where(function ($query) use ($select,$keyword) {
                 if ($select && $keyword) {

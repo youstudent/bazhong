@@ -43,7 +43,7 @@
                         <div class="form-group">
                             <label for="activity_date" class="col-sm-2 control-label">活动日期<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-3">
-                                <input type="text" name="activity_date" class="form-control" id="activity_date" placeholder="请选择活动日期" readonly="readonly" required >
+                                <input type="text" name="activity_date" class="form-control" id="activity_date" placeholder="请选择活动日期" required >
                             </div>
                             <label for="activity_date" class="col-sm-1 control-label">活动时间<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-3">
@@ -79,7 +79,7 @@
     </section>
 @endsection
 @section('script')
-    <link href=" /css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
     <script src="/js/fileinput.js" type="text/javascript"></script>
     <script src="/js/fileinput_locale_de.js" type="text/javascript"></script>
     <script>
@@ -89,6 +89,8 @@
             ,type: 'date'
             ,range: true
             ,btns: ['confirm']
+            ,min: '<?php echo $start?>'
+            ,max: '<?php echo $end?>'
         });
         //日期时间范围
         laydate.render({

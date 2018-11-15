@@ -37,6 +37,7 @@ Route::group(['middleware'=>'auth:web','namespace'=>'Admin'], function(){
         Route::match(['get','post'],'/option','BusinessController@option');
         Route::post('/createAreaName/{type}','BusinessController@createAreaName');
         Route::post('/editOption/{id}','BusinessController@editOption');
+        Route::get('/saveRecord','BusinessController@saveRecord');
     });
 
 //广告位管理

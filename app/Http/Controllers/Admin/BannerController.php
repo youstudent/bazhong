@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Model\Banner;
 use App\Http\Model\BannerSign_up;
 use App\Http\Model\Business;
+use App\Http\model\Category;
 use App\Http\Model\Common;
 use App\Http\Model\Remarks;
 use App\UploadsImg;
@@ -48,7 +49,8 @@ class BannerController extends Controller
             $data = Banner::find($request->get('id'));
             $data['business_id'] = json_decode($data['business_id']);
             $business =Common::map(Business::select('name','id')->get()->toArray(),'id','name');
-            return view('banner.edit',['data'=>$data,'business'=>$business]);
+            $category =Category::select(['id','category_name'])->get()->toArray();
+            return view('banner.edit',['data'=>$data,'business'=>$business,'category'=>$category]);
         }
 
     }
@@ -65,7 +67,7 @@ class BannerController extends Controller
 
 
     /**
-     * 上床形象图片
+     * 形象图片
      * @param Request $request
      * @return int
      */

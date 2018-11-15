@@ -33,18 +33,17 @@
                         <input  type="hidden" name="main_points_x" id="main_points_x">
                         <input type="hidden" name="main_points_y" id="main_points_y">
                         <div class="form-group">
-                            <label for="shop_position" class="col-sm-2 control-label">当前店铺地址</label>
+                            <label for="shop_position" class="col-sm-2 control-label">店铺地址详细</label>
                             <div class="col-sm-7">
-                                <input type="text"  id="shop_position"  class="form-control"  required value="{{$data['shop_position']}}" readonly="readonly">
+                                <input type="text"  id="shop_position" placeholder="请输入:店铺地址详细"  class="form-control"  required value="{{$data['shop_position']}}">
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
                         <div class="form-group">
-                            <label for="suggestId" class="col-sm-2 control-label">新店铺地址</label>
-                            <div class="col-sm-7" id="r-result">
-                                <input type="text" name="shop_position" id="suggestId" class="form-control"  placeholder="如需修改店铺地址:请输入店铺地址">
-                                <div id="l-map" style="height: 500px;margin-top: 5px"></div>
-                                <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+                            <label class="col-sm-2 control-label">经纬度</label>
+                            <div class="col-sm-7">
+                                <input type="text" value="{{$data['main_points_x']}},{{$data['main_points_y']}}" id="position" class="form-control"  placeholder="点击地图获取获取" readonly="readonly" required >
+                                <div id="allmap" style="height: 500px;margin-top: 5px"></div>
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
@@ -56,6 +55,25 @@
                             <label for="phone" class="col-sm-1 control-label">电话<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" name="phone" class="form-control" id="phone" pattern="(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$" placeholder="请输入电话" required value="{{$data['phone']}}" >
+                            </div>
+                        </div>
+                        <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">关键字A</label>
+                            <div class="col-sm-1">
+                                <input type="text" required name="Keyword_one" class="form-control" value="{{$data['Keyword_one']}}" >
+                            </div>
+                            <label class="col-sm-1 control-label">关键字B</label>
+                            <div class="col-sm-1">
+                                <input type="text" required name="Keyword_two" class="form-control" value="{{$data['Keyword_two']}}" >
+                            </div>
+                            <label class="col-sm-1 control-label">关键字C</label>
+                            <div class="col-sm-1">
+                                <input type="text" required name="Keyword_three" class="form-control" value="{{$data['Keyword_three']}}" >
+                            </div>
+                            <label  class="col-sm-1 control-label">关键字D</label>
+                            <div class="col-sm-1">
+                                <input type="text" required name="Keyword_four" class="form-control" value="{{$data['Keyword_four']}}">
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
@@ -83,9 +101,9 @@
                             <div class="col-sm-3">
                                 <input type="text" name="name" class="form-control" id="name" placeholder="请输入店铺名" required value="{{$data['name']}}">
                             </div>
-                            <label for="password" class="col-sm-1 control-label">新密码</label>
+                            <label for="name" class="col-sm-1 control-label">商家有效截止期<span style="color: red">&nbsp;*</span></label>
                             <div class="col-sm-3">
-                                <input type="password" name="password" id="password" class="form-control text-danger" placeholder="请输入新密码">
+                                <input type="text" name="effective_date" class="form-control" id="effective_date" placeholder="请店家选择日期" required value="{{$data['effective_date']}}">
                             </div>
                         </div>
                         <hr style="height:1px;border:none;border-top:1px dashed lavender;" />
@@ -122,7 +140,7 @@
     </section>
 @endsection
 @section('script')
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6o2Gs6C905ObYPVcdzbiXFOAh3xwKfLB"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=6o2Gs6C905ObYPVcdzbiXFOAh3xwKfLB"></script>
     <link href="/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
     <script src="/js/fileinput.js" type="text/javascript"></script>
     <script src="/js/fileinput_locale_de.js" type="text/javascript"></script>
@@ -231,5 +249,25 @@
             });
             local.search(myValue);
         }
+    </script>
+
+    <script type="text/javascript">
+        var x ='<?php echo $data['main_points_x']?>';
+        var y ='<?php echo $data['main_points_y']?>';
+        // 百度地图API功能
+        var map = new BMap.Map("allmap");
+        map.centerAndZoom(new BMap.Point(x,y),100);
+        map.enableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
+        map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+        //单击获取点击的经纬度
+        map.addEventListener("click",function(e){
+            $("#main_points_x").val(e.point.lng);
+            $("#main_points_y").val(e.point.lat);
+            $("#position").val(e.point.lng + "," + e.point.lat);
+        });
+        //日期时间范围
+        laydate.render({
+            elem: '#effective_date'
+        });
     </script>
 @endsection

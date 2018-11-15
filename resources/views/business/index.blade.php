@@ -58,6 +58,7 @@
                                     </div>
                                 </div>
                                 <a href="{{url('/admin/business/create')}}" class="btn btn-default pull-right"> <i class="fa fa-plus"></i> &nbsp;添加</a>
+                                <a href="{{url('/admin/email/create')}}" class="btn btn-default pull-right"> <i class="fa fa-envelope"></i> &nbsp;发送邮件</a>
                             </div>
                         </form>
 
@@ -67,7 +68,7 @@
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover table-bordered text-center table-striped">
                             <tr>
-                                <th>序号</th>
+                                <th id="selectAll">全选</th>
                                 <th>商家ID</th>
                                 <th>店铺名</th>
                                 <th>分类</th>
@@ -76,6 +77,7 @@
                                 <th>二维码(点击放大)</th>
                                 <th>邮箱</th>
                                 <th>创建时间</th>
+                                <th>有效截止</th>
                                 <th>访问量</th>
                                 <th>状态</th>
                                 <th>操作</th>
@@ -83,7 +85,10 @@
                             <?php $i=1?>
                             @foreach($datas as $data)
                                 <tr>
-                                    <td>{{$i}}</td>
+                                    <td>
+                                        <input {{in_array($data['shop_id'],$cache)?'checked':''}} type="checkbox" class="a" number={{$data['shop_id']}}>
+                                        {{$i}}
+                                    </td>
                                     <td>{{$data['shop_id']}}</td>
                                     <td>{{$data['name']}}</td>
                                     <td>{{$data['category']['category_name']}}/ {{$category[$data['son_category_id']]}}</td>
@@ -92,6 +97,7 @@
                                     <td><a hrefs="{{$data['code_img']}}" class="qrcode"><img style="width: 100px;height: 40px" src="{{$data['code_img']}}"></a></td>
                                     <td>{{$data['email']}}</td>
                                     <td>{{$data['created_at']}}</td>
+                                    <td>{{$data['effective_date']}}</td>
                                     <td>{{$data['browsing_num']}}</td>
                                     <td>
                                         @if($data['status'] == 1)
@@ -158,5 +164,59 @@
                 });
             });
         });
+        $("#selectAll").click(function () {
+            var yes = [];
+            var no = [];
+            $("[type='checkbox']").each(function () {
+                $(this).prop("checked", !$(this).prop("checked"));
+                if(this.checked == true){
+                    var number =  $(this).attr('number');
+                    if (number){
+                        yes.push(number);
+                    }
+                }else {
+                    var number =  $(this).attr('number');
+                    if (number){
+                        no.push(number);
+                    }
+                }
+            });
+            $.ajax({
+                url:"{{url('/admin/business/saveRecord')}}",
+                type:'get',
+                data:{yes:yes,no:no},
+                success:function (res) {
+                    if(res.code == 1) {
+
+                    }
+                }
+            });
+        });
+        $(".a").click(function () {
+            var yes =[];
+            var no =[];
+            $(this).prop("checked");
+            if(this.checked == true){
+                var number =  $(this).attr('number');
+                if (number){
+                    yes.push(number);
+                }
+            }else {
+                var number =  $(this).attr('number');
+                if (number){
+                    no.push(number);
+                }
+            }
+            $.ajax({
+                url:"{{url('/admin/business/saveRecord')}}",
+                type:'get',
+                data:{yes:yes,no:no},
+                success:function (res) {
+                    if(res.code == 1) {
+
+                    }
+                }
+            });
+        })
     </script>
 @endsection

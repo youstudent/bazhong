@@ -39,7 +39,8 @@ class Banner extends Model
                 $value['business_id'] = implode(',',Common::map($re,'name','name'));
             }
         }
-        return ['datas'=>$data,'homeImg'=>$homeImg];
+        $category = Common::map(Category::select(['id','category_name'])->get()->toArray(),'id','category_name');
+        return ['datas'=>$data,'homeImg'=>$homeImg,'category'=>$category];
     }
 
 
@@ -65,6 +66,10 @@ class Banner extends Model
      */
     public function edit($request){
         $data = $request->all();
+        if ($res = self::where('id',$data['id'])->select(['business_id'])->first()){
+            Business::whereIn('id',json_decode($res->business_id))->update(['sort_a'=>null]);
+        }
+        Business::whereIn('id',$data['business'])->update(['sort_a'=>1]);
         $data['business_id']  = json_encode($data['business']);
         $file =  Input::file('img');
         $path = '/uploads';
