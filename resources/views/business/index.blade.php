@@ -41,10 +41,13 @@
                                             <option value="1">智能查询</option>
                                             <option {{request('select')=='phone'?'selected':''}} value="phone">手机号</option>
                                             <option {{request('select')=='name'?'selected':''}} value="name">店铺名</option>
+                                            <option {{request('select')=='Keyword_one'?'selected':''}} value="Keyword_one">关键字A</option>
+                                            <option {{request('select')=='Keyword_two'?'selected':''}} value="Keyword_two">关键字B</option>
+                                            <option {{request('select')=='Keyword_three'?'selected':''}} value="Keyword_three">关键字C</option>
+                                            <option {{request('select')=='Keyword_four'?'selected':''}} value="Keyword_four">关键字D</option>
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="form-group field-users-keyword">
@@ -79,6 +82,10 @@
                                 <th>创建时间</th>
                                 <th>有效截止</th>
                                 <th>访问量</th>
+                                <th>关键字A</th>
+                                <th>关键字B</th>
+                                <th>关键字C</th>
+                                <th>关键字D</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -99,6 +106,10 @@
                                     <td>{{$data['created_at']}}</td>
                                     <td>{{$data['effective_date']}}</td>
                                     <td>{{$data['browsing_num']}}</td>
+                                    <td>{{$data['Keyword_one']}}</td>
+                                    <td>{{$data['Keyword_two']}}</td>
+                                    <td>{{$data['Keyword_three']}}</td>
+                                    <td>{{$data['Keyword_four']}}</td>
                                     <td>
                                         @if($data['status'] == 1)
                                             <span class="label bg-success">正常</span>

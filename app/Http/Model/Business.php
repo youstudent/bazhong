@@ -33,8 +33,12 @@ class Business extends Model
         $time = $this->initTime($search);
         $keyword =  request('keyword')?request('keyword'):'';
         $select = request('select')?request('select'):'1';
+        $orderBy = 'id';
+        if ($select!=='1'){
+            $orderBy = $select;
+        }
         $category_id = request('category_id')?request('category_id'):'';
-        $data = self::select(['id', 'email', 'name', 'phone', 'created_at','category_id','shop_img','shop_id','browsing_num','status','code_img','son_category_id','effective_date'])
+        $data = self::select(['id', 'email', 'name', 'phone', 'created_at','category_id','shop_img','shop_id','browsing_num','status','code_img','son_category_id','effective_date','Keyword_one','Keyword_two','Keyword_three','Keyword_four'])
             ->where('created_at','>',$time[0])->where('created_at','<',$time[1])
             ->where('effective_date','>',date('Y-m-d'))
             ->where(function ($query) use ($select,$keyword,$category_id) {
@@ -43,14 +47,18 @@ class Business extends Model
                         $query->where($select, 'like', '%' . $keyword . '%');
                     }else{
                         $query->where('name', 'like', '%' . $keyword . '%')
-                            ->orWhere('phone', 'like', '%' . $keyword . '%');
+                            ->orWhere('phone', 'like', '%' . $keyword . '%')
+                            ->orWhere('Keyword_one', 'like', '%' . $keyword . '%')
+                            ->orWhere('Keyword_two', 'like', '%' . $keyword . '%')
+                            ->orWhere('Keyword_three', 'like', '%' . $keyword . '%')
+                            ->orWhere('Keyword_four', 'like', '%' . $keyword . '%');
                     }
                 }
                 if ($category_id){
                     $query->where('category_id',$category_id);
                 }
             })
-            ->orderBy('id', 'desc')
+            ->orderBy($orderBy, 'desc')
             ->paginate(config('language.pages'));
         //追加额外参数，例如搜索条件
         $appendData = $data->appends(array(
